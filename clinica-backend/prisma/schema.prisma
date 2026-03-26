@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Especialidad {
+  CLINICA_MEDICA
+  CARDIOLOGIA
+  DERMATOLOGIA
+  NEUROLOGIA
+  PEDIATRIA
+  GINECOLOGIA
+  TRAUMATOLOGIA
+  OFTALMOLOGIA
+  PSIQUIATRIA
+  OTRA
+}
+
+enum TipoAntecedente {
+  ALERGIAS
+  ENFERMEDAD_CRONICA
+  CIRUGIA
+  MEDICACION
+  FAMILIAR
+  OTRO
+}
+
+enum TipoDocumento {
+  ESTUDIO_LABORATORIO
+  IMAGEN_DIAGNOSTICA
+  RECETA
+  INFORME_MEDICO
+  CONSENTIMIENTO
+  OTRO
+}
+
+model Medico {
+  legajo        Int           @id @default(autoincrement())
+  nombre        String
+  especialidad  Especialidad
+  consultas     Consulta[]
+  tratamientos  Tratamiento[]
+}
+
+model Paciente {
+  dni             Int              @id
+  nombre          String
+  peso            Float
+  altura          Float
+  historiaClinica HistoriaClinica?
+}
+
+model HistoriaClinica {
+  expediente Int           @id @default(autoincrement())
+  dniPaciente      Int           @unique
+  paciente         Paciente      @relation(fields: [dniPaciente], references: [dni])
+  consultas        Consulta[]
+  tratamientos     Tratamiento[]
+  antecedentes     Antecedente[]
+  documentos       Documento[]
+}
+
+model Consulta {
+  numeroConsulta   Int             @id @default(autoincrement())
+  numeroExpediente Int
+  historiaClinica  HistoriaClinica @relation(fields: [numeroExpediente], references: [expediente])
+  fecha            DateTime
+  legajoMedico     Int
+  medico           Medico          @relation(fields: [legajoMedico], references: [legajo])
+  motivo           String
+  diagnostico      String
+  observaciones    String?
+}
+
+model Tratamiento {
+  numeroTratamiento Int             @id @default(autoincrement())
+  numeroExpediente  Int
+  historiaClinica   HistoriaClinica @relation(fields: [numeroExpediente], references: [expediente])
+  descripcion       String
+  fechaInicio       DateTime
+  activo            Boolean         @default(true)
+  legajoMedico      Int
+  medico            Medico          @relation(fields: [legajoMedico], references: [legajo])
+}
+
+model Antecedente {
+  id               Int             @id @default(autoincrement())
+  numeroExpediente Int
+  historiaClinica  HistoriaClinica @relation(fields: [numeroExpediente], references: [expediente])
+  tipo             TipoAntecedente
+  descripcion      String
+}
+
+model Documento {
+  numeroDocumento  Int             @id @default(autoincrement())
+  numeroExpediente Int
+  historiaClinica  HistoriaClinica @relation(fields: [numeroExpediente], references: [expediente])
+  tipo             TipoDocumento
+  archivo          String
+  fecha            DateTime
+}
