@@ -1,76 +1,40 @@
-import { useState } from 'react'
-import CartaDePaciente from './components/CartaDePaciente'
-import CartaDeMedico from './components/CartaDeMedico'
-import HistoriaClinica from './components/HistoriaClinica'
+import { useState } from 'react';
+import PacienteCard from './components/CartaDePaciente';
+import CartaDeMedico from './components/CartaDeMedico';
+import HistoriaClinica from './components/HistoriaClinica';
+import CondicionFisicaPaciente from './components/CondicionFisicaPaciente';
 
 // ── Datos de ejemplo ──────────────────────────────────────────
 const pacientes = [
   { dni: 12345678, nombre: 'Juan Pérez', peso: 78, altura: 1.75 },
   { dni: 87654321, nombre: 'María González', peso: 62, altura: 1.63 },
   { dni: 11223344, nombre: 'Carlos Rodríguez', peso: 95, altura: 1.80 },
-]
+];
 
 const medicos = [
   { legajo: 1, nombre: 'Ana Torres', especialidad: 'CARDIOLOGIA' },
   { legajo: 2, nombre: 'Luis Herrera', especialidad: 'NEUROLOGIA' },
   { legajo: 3, nombre: 'Sofía Méndez', especialidad: 'PEDIATRIA' },
-]
+];
 
-const historias = {
-  12345678: {
-    expediente: 1001,
-    dniPaciente: 12345678,
-    paciente: pacientes[0],
-    consultas: [
-      {
-        numeroConsulta: 1,
-        fecha: '2024-03-15',
-        motivo: 'Dolor en el pecho',
-        diagnostico: 'Angina de pecho leve. Se recomienda reposo.',
-        observaciones: 'Paciente con antecedentes familiares cardíacos.',
-        legajoMedico: 1,
-        medico: medicos[0],
-      },
-      {
-        numeroConsulta: 2,
-        fecha: '2024-06-20',
-        motivo: 'Control de rutina',
-        diagnostico: 'Paciente estable. Sin novedades.',
-        observaciones: null,
-        legajoMedico: 1,
-        medico: medicos[0],
-      },
-    ],
-    tratamientos: [
-      {
-        numeroTratamiento: 1,
-        descripcion: 'Atorvastatina 20mg — 1 comprimido por día con la cena.',
-        fechaInicio: '2024-03-16',
-        activo: true,
-        legajoMedico: 1,
-        medico: medicos[0],
-      },
-    ],
-    antecedentes: [
-      { id: 1, tipo: 'ALERGIAS', descripcion: 'Alergia a la penicilina.' },
-      { id: 2, tipo: 'FAMILIAR', descripcion: 'Padre con infarto de miocardio a los 58 años.' },
-    ],
-    documentos: [
-      { numeroDocumento: 1, tipo: 'ESTUDIO_LABORATORIO', archivo: '#', fecha: '2024-03-14' },
-      { numeroDocumento: 2, tipo: 'IMAGEN_DIAGNOSTICA', archivo: '#', fecha: '2024-03-14' },
-    ],
-  },
-}
+const historias = {};
 // ─────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [vista, setVista] = useState('pacientes') // 'pacientes' | 'medicos' | 'historia'
-  const [historiaActiva, setHistoriaActiva] = useState(null)
+  // ✅ Estado declarado correctamente al inicio del componente
+  const [vista, setVista] = useState('pacientes'); // 'pacientes' | 'medicos' | 'historia' | 'condicion'
+  const [historiaActiva, setHistoriaActiva] = useState(null);
+  const [pacienteActivo, setPacienteActivo] = useState(null);
 
   const verHistoria = (dni) => {
-    setHistoriaActiva(historias[dni] ?? null)
-    setVista('historia')
-  }
+    setHistoriaActiva(historias[dni] ?? null);
+    setVista('historia');
+  };
+
+  const verCondicionFisica = (paciente) => {
+    setPacienteActivo(paciente);
+    setVista('condicion');
+  };
 
   return (
     <div className="min-vh-100 bg-light">
@@ -97,8 +61,7 @@ export default function App() {
       </nav>
 
       <div className="container py-4">
-
-        {/* Vista: Pacientes */}
+        {/* Vista Pacientes */}
         {vista === 'pacientes' && (
           <>
             <h5 className="fw-semibold mb-3 text-secondary">
@@ -107,14 +70,18 @@ export default function App() {
             <div className="row g-3">
               {pacientes.map(p => (
                 <div className="col-md-4" key={p.dni}>
-                  <CartaDePaciente paciente={p} onVerHistoria={verHistoria} />
+                  <PacienteCard
+                    paciente={p}
+                    onVerHistoria={verHistoria}
+                    onVerCondicionFisica={verCondicionFisica}
+                  />
                 </div>
               ))}
             </div>
           </>
         )}
 
-        {/* Vista: Médicos */}
+        {/* Vista Médicos */}
         {vista === 'medicos' && (
           <>
             <h5 className="fw-semibold mb-3 text-secondary">
@@ -130,7 +97,7 @@ export default function App() {
           </>
         )}
 
-        {/* Vista: Historia Clínica */}
+        {/* Vista Historia Clínica */}
         {vista === 'historia' && (
           <>
             <button
@@ -143,7 +110,19 @@ export default function App() {
           </>
         )}
 
+        {/* Vista Condición Física */}
+        {vista === 'condicion' && pacienteActivo && (
+          <>
+            <button
+              className="btn btn-outline-secondary btn-sm mb-3"
+              onClick={() => setVista('pacientes')}
+            >
+              <i className="bi bi-arrow-left me-1" />Volver
+            </button>
+            <CondicionFisicaPaciente paciente={pacienteActivo} />
+          </>
+        )}
       </div>
     </div>
-  )
+  );
 }

@@ -35,7 +35,6 @@ export default function MedicoCard({ medico }) {
         <i className={`bi ${icon} fs-4`} />
         <div>
           <h6 className="mb-0 fw-semibold">Dr/a. {medico.nombre}</h6>
-          <small className="opacity-75">Legajo #{medico.legajo}</small>
         </div>
       </div>
       <div className="card-body d-flex align-items-center justify-content-center">
