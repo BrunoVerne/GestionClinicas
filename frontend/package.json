@@ -3,15 +3,33 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+
+
+  "scripts": 
+  {
+    "dev:vite": "vite",
+    "dev:electron": "NODE_ENV=development electron .",
+    "dev": "concurrently \"npm run dev:vite\" \"wait-on http://localhost:5173 && npm run dev:electron\"",
+    "build": "vite build",
+    "start": "npm run build && electron ."
   },
-  "dependencies": {
-    "electron": "^30.5.1"
+
+  
+  "dependencies":
+  {
+    "electron": "^30.5.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
   },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^9.2.1",
+    "vite": "^6.4.2",
+    "wait-on": "^9.0.5"
+  }
 }
