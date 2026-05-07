@@ -47,6 +47,7 @@ enum TipoDocumento {
 model Medico {
   legajo        Int           @id @default(autoincrement())
   nombre        String
+  activo        Boolean       @default(true)
   especialidad  Especialidad
   consultas     Consulta[]
   tratamientos  Tratamiento[]

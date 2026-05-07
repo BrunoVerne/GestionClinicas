@@ -1,0 +1,451 @@
+{
+	"info": {
+		"_postman_id": "7ffdfddd-b8b8-41f5-891a-75c8e9f6116e",
+		"name": "CLINICAS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "44844361",
+		"_collection_link": "https://brunoverne.postman.co/workspace/BrunoVerne's-Workspace~6468c3ce-f431-43e5-8392-90c17e420e4e/collection/44844361-7ffdfddd-b8b8-41f5-891a-75c8e9f6116e?action=share&source=collection_link&creator=44844361"
+	},
+	"item": [
+		{
+			"name": "Medico",
+			"item": [
+				{
+					"name": "Medicos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3001/medicos"
+					},
+					"response": []
+				},
+				{
+					"name": "Medico",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/medicos/:legajo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"medicos",
+								":legajo"
+							],
+							"variable": [
+								{
+									"key": "legajo",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Medico",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Dra. Laura Fernández\",\n  \"especialidad\": \"CLINICA_MEDICA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3001/medicos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Paciente",
+			"item": [
+				{
+					"name": "Pacientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3001/pacientes"
+					},
+					"response": []
+				},
+				{
+					"name": "Paciente",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/pacientes/:dni",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"pacientes",
+								":dni"
+							],
+							"variable": [
+								{
+									"key": "dni",
+									"value": "12345678"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Paciente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dni\": 87654321,\n  \"nombre\": \"Luis Martínez\",\n  \"peso\": 80.0,\n  \"altura\": 1.75\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3001/pacientes"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Documentos",
+			"item": [
+				{
+					"name": "Documento generico",
+					"item": [
+						{
+							"name": "Documentos",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Documento",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Documento",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"numeroExpediente\": 2,\n  \"tipo\": \"RECETA\",\n  \"archivo\": \"receta_paracetamol_2024_01_10.pdf\",\n  \"fecha\": \"2024-01-10\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:3001/documentos"
+							},
+							"response": []
+						},
+						{
+							"name": "Documento",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3001/documentos/:numeroDocumento",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"documentos",
+										":numeroDocumento"
+									],
+									"variable": [
+										{
+											"key": "numeroDocumento",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Consulta",
+					"item": [
+						{
+							"name": "Consultas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:3001/consultas"
+							},
+							"response": []
+						},
+						{
+							"name": "Consulta",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/consultas/:numeroConsulta",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"consultas",
+										":numeroConsulta"
+									],
+									"variable": [
+										{
+											"key": "numeroConsulta",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Consulta",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"numeroExpediente\": 2,\n  \"fecha\": \"2024-01-10T09:00:00\",\n  \"legajoMedico\": 2,\n  \"motivo\": \"Fiebre y tos\",\n  \"diagnostico\": \"Infección viral\",\n  \"observaciones\": \"Reposo y líquidos\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:3001/consultas"
+							},
+							"response": []
+						},
+						{
+							"name": "Consulta",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/consultas/:numeroConsulta",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"consultas",
+										":numeroConsulta"
+									],
+									"variable": [
+										{
+											"key": "numeroConsulta",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tratamiento",
+					"item": [
+						{
+							"name": "Tratamientos",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Tratamiento",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Tratamientos",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"numeroExpediente\": 1,\n  \"descripcion\": \"Enalapril 10mg cada 12 horas\",\n  \"fechaInicio\": \"2024-02-21\",\n  \"legajoMedico\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:3001/tratamientos"
+							},
+							"response": []
+						},
+						{
+							"name": "Tratamiento",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/tratamientos/:numeroTratamiento",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"tratamientos",
+										":numeroTratamiento"
+									],
+									"variable": [
+										{
+											"key": "numeroTratamiento",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Antecedente",
+					"item": [
+						{
+							"name": "Antecendente",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Antecedente",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"numeroExpediente\": 2,\n  \"tipo\": \"MEDICACION\",\n  \"descripcion\": \"Enalapril 10mg diarios\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:3001/antecedentes"
+							},
+							"response": []
+						},
+						{
+							"name": "Antecedente",
+							"request": {
+								"method": "DELETE",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Antecedentes",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "HistoriaClinica",
+			"item": [
+				{
+					"name": "historiaClinica",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dniPaciente\": 87654321\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3001/historias"
+					},
+					"response": []
+				},
+				{
+					"name": "HistoriasClinicas",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
