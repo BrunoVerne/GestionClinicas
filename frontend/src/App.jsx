@@ -4,7 +4,7 @@ import CartaDeMedico from './components/CartaDeMedico';
 import HistoriaClinica from './components/HistoriaClinica';
 import CondicionFisicaPaciente from './components/CondicionFisicaPaciente';
 
-// ── Datos de ejemplo ──────────────────────────────────────────
+// Datos de ejemplo
 const pacientes = [
   { dni: 12345678, nombre: 'Juan Pérez', peso: 78, altura: 1.75 },
   { dni: 87654321, nombre: 'María González', peso: 62, altura: 1.63 },
@@ -17,17 +17,14 @@ const medicos = [
   { legajo: 3, nombre: 'Sofía Méndez', especialidad: 'PEDIATRIA' },
 ];
 
-const historias = {};
-// ─────────────────────────────────────────────────────────────
-
 export default function App() {
-  // ✅ Estado declarado correctamente al inicio del componente
-  const [vista, setVista] = useState('pacientes'); // 'pacientes' | 'medicos' | 'historia' | 'condicion'
-  const [historiaActiva, setHistoriaActiva] = useState(null);
+  const [vista, setVista] = useState('pacientes');
+  const [dniSeleccionado, setDniSeleccionado] = useState(null);  // ✅ Cambia a DNI
   const [pacienteActivo, setPacienteActivo] = useState(null);
 
   const verHistoria = (dni) => {
-    setHistoriaActiva(historias[dni] ?? null);
+    console.log('📌 Ver historia para DNI:', dni);
+    setDniSeleccionado(dni);  // ✅ Guarda el DNI, no la historia
     setVista('historia');
   };
 
@@ -97,7 +94,7 @@ export default function App() {
           </>
         )}
 
-        {/* Vista Historia Clínica */}
+        {/* Vista Historia Clínica - ✅ AHORA PASA EL DNI */}
         {vista === 'historia' && (
           <>
             <button
@@ -106,7 +103,7 @@ export default function App() {
             >
               <i className="bi bi-arrow-left me-1" />Volver
             </button>
-            <HistoriaClinica historia={historiaActiva} />
+            <HistoriaClinica dni={dniSeleccionado} />  {/* ✅ Cambiado de 'historia' a 'dni' */}
           </>
         )}
 

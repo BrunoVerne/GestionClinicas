@@ -1,16 +1,58 @@
 // HistoriaClinica.jsx
+import { useState, useEffect } from 'react';
+import { getHistoriaByDni } from '../services/historiaService';
 import ItemConsulta from '../Docs/ItemConsulta'
 import ItemTratamiento from '../Docs/ItemTratamiento'
 import ItemAntecedente from '../Docs/ItemAntecedente'
-import ItemDocumento from '../Docs/ItemDocumento'
+import ItemDocumento from '../Docs/ItemDocumentoGenerico'
 
-export default function HistoriaClinica({ historia }) {
+export default function HistoriaClinica({ dni }) {
+  const [historia, setHistoria] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (dni) {
+      cargarHistoria();
+    }
+  }, [dni]);
+
+  const cargarHistoria = async () => {
+    setCargando(true);
+    setError(null);
+    
+    try {
+      const data = await getHistoriaByDni(dni);
+      setHistoria(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  if (cargando) return (
+    <div className="text-center py-5">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Cargando...</span>
+      </div>
+      <p className="mt-2 text-muted">Cargando historia clínica para DNI: {dni}...</p>
+    </div>
+  );
+
+  if (error) return (
+    <div className="alert alert-danger">
+      <i className="bi bi-exclamation-triangle me-2" />
+      Error: {error}
+    </div>
+  );
+
   if (!historia) return (
     <div className="alert alert-info">
       <i className="bi bi-info-circle me-2" />
-      No se encontró la historia clínica.
+      No se encontró la historia clínica para el DNI {dni}.
     </div>
-  )
+  );
 
   return (
     <div>
@@ -27,7 +69,7 @@ export default function HistoriaClinica({ historia }) {
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Tabs - resto igual */}
       <ul className="nav nav-tabs mb-4" id="hcTabs" role="tablist">
         {[
           { id: 'consultas', icon: 'bi-calendar2-check', label: 'Consultas', count: historia.consultas?.length },
@@ -51,31 +93,27 @@ export default function HistoriaClinica({ historia }) {
       </ul>
 
       <div className="tab-content">
-        {/* Consultas */}
         <div className="tab-pane fade show active" id="consultas">
           {historia.consultas?.length > 0
-            ? historia.consultas.map(c => <ConsultaItem key={c.numeroConsulta} consulta={c} />)
+            ? historia.consultas.map(c => <ItemConsulta key={c.numeroConsulta} consulta={c} />)
             : <p className="text-muted">Sin consultas registradas.</p>}
         </div>
 
-        {/* Tratamientos */}
         <div className="tab-pane fade" id="tratamientos">
           {historia.tratamientos?.length > 0
-            ? historia.tratamientos.map(t => <TratamientoItem key={t.numeroTratamiento} tratamiento={t} />)
+            ? historia.tratamientos.map(t => <ItemTratamiento key={t.numeroTratamiento} tratamiento={t} />)
             : <p className="text-muted">Sin tratamientos registrados.</p>}
         </div>
 
-        {/* Antecedentes */}
         <div className="tab-pane fade" id="antecedentes">
           {historia.antecedentes?.length > 0
-            ? historia.antecedentes.map(a => <AntecedenteItem key={a.id} antecedente={a} />)
+            ? historia.antecedentes.map(a => <ItemAntecedente key={a.id} antecedente={a} />)
             : <p className="text-muted">Sin antecedentes registrados.</p>}
         </div>
 
-        {/* Documentos */}
         <div className="tab-pane fade" id="documentos">
           {historia.documentos?.length > 0
-            ? historia.documentos.map(d => <DocumentoItem key={d.numeroDocumento} documento={d} />)
+            ? historia.documentos.map(d => <ItemDocumento key={d.numeroDocumento} documento={d} />)
             : <p className="text-muted">Sin documentos registrados.</p>}
         </div>
       </div>

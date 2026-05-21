@@ -29,4 +29,40 @@ router.get('/', async (req, res) => {
   }
 });
 
+
+
+router.get('/:dni', async (req, res) => {
+  const { dni } = req.params;
+  
+  try {
+    const historia = await prisma.HistoriaClinica.findUnique({
+      where: { 
+        dniPaciente: parseInt(dni)  // Convierte el DNI a número
+      },
+      include: {
+        paciente: true,        // Incluye datos del paciente
+        consultas: {
+          orderBy: { fecha: 'desc' }  // Ordenar por fecha descendente
+        },
+        tratamientos: {
+          orderBy: { fechaInicio: 'desc' }
+        },
+        antecedentes: true,
+        documentos: true
+      }
+    });
+    
+    if (!historia) {
+      return res.status(404).json({ 
+        error: 'No se encontró historia clínica para el DNI proporcionado' 
+      });
+    }
+    
+    res.json(historia);
+  } catch (error) {
+    console.error('Error al obtener historia por DNI:', error);
+    res.status(500).json({ error: 'Error interno del servidor al obtener la historia clínica' });
+  }
+});
+
 module.exports = router;
