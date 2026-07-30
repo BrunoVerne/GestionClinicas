@@ -44,6 +44,20 @@ enum TipoDocumento {
   OTRO
 }
 
+enum RolUsuario {
+  ADMIN
+  MEDICO
+  RECEPCIONISTA
+}
+
+model Usuario {
+  id            Int        @id @default(autoincrement())
+  nombreUsuario String     @unique
+  passwordHash  String
+  rol           RolUsuario @default(RECEPCIONISTA)
+  activo        Boolean    @default(true)
+}
+
 model Medico {
   legajo        Int           @id @default(autoincrement())
   nombre        String

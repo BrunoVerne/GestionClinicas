@@ -7,7 +7,7 @@ const router = Router();
 // GET PACIENTES
 router.get('/', async (req, res) => {
   try {
-    const pacientes = await prisma.Paciente.findMany({
+    const pacientes = await prisma.paciente.findMany({
       include: { historiaClinica: true }
     });
     res.json(pacientes);
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const { dni, nombre, peso, altura } = req.body;
   try {
-    const paciente = await prisma.Paciente.create({
+    const paciente = await prisma.paciente.create({
       data: { dni, nombre, peso, altura }
     });
     res.json(paciente);
@@ -40,7 +40,7 @@ router.get('/:dni', async (req, res) => {
   }
 
   try {
-    const paciente = await prisma.Paciente.findUnique({
+    const paciente = await prisma.paciente.findUnique({
       where: { dni },
       include: {
         historiaClinica: {

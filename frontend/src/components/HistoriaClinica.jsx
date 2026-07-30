@@ -62,7 +62,6 @@ export default function HistoriaClinica({ dni }) {
           <div className="d-flex align-items-center gap-3">
             <i className="bi bi-folder2-open fs-2" />
             <div>
-              <h5 className="mb-0 fw-bold">Historia Clínica #{historia.expediente}</h5>
               <small className="opacity-75">Paciente: {historia.paciente?.nombre} — DNI {historia.dniPaciente}</small>
             </div>
           </div>
