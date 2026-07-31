@@ -1,0 +1,281 @@
+:root {
+  --panel-primario: #175cd3;
+  --panel-primario-oscuro: #1849a9;
+  --panel-fondo: #f3f6fb;
+  --panel-superficie: #ffffff;
+  --panel-texto: #101828;
+  --panel-texto-secundario: #667085;
+  --panel-borde: #e4e7ec;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.panel-principal {
+  min-height: 100vh;
+  color: var(--panel-texto);
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(23, 92, 211, 0.09),
+      transparent 28rem
+    ),
+    var(--panel-fondo);
+}
+
+.barra-principal {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0 2rem;
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    var(--panel-primario-oscuro),
+    var(--panel-primario)
+  );
+  box-shadow: 0 5px 20px rgba(16, 24, 40, 0.16);
+}
+
+.marca-clinica {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0;
+  border: 0;
+  color: #ffffff;
+  background: transparent;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.marca-clinica i {
+  font-size: 1.35rem;
+}
+
+.barra-acciones {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.usuario-panel {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-right: 0.5rem;
+}
+
+.usuario-avatar {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.17);
+}
+
+.usuario-informacion {
+  display: flex;
+  flex-direction: column;
+}
+
+.usuario-nombre {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.usuario-rol {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.7rem;
+}
+
+.boton-navegacion,
+.boton-salir {
+  min-height: 37px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 9px;
+  color: #ffffff;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition:
+    background 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.boton-navegacion:hover,
+.boton-salir:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.boton-navegacion.activo {
+  color: var(--panel-primario-oscuro);
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+.contenido-principal {
+  max-width: 1320px;
+}
+
+.encabezado-vista {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.75rem;
+  border: 1px solid var(--panel-borde);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 30px rgba(16, 24, 40, 0.06);
+}
+
+.etiqueta-vista {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--panel-primario);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.encabezado-vista h1 {
+  margin: 0;
+  color: var(--panel-texto);
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.encabezado-vista p {
+  max-width: 640px;
+  margin: 0.55rem 0 0;
+  color: var(--panel-texto-secundario);
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+.contador-registros {
+  min-width: 85px;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(23, 92, 211, 0.15);
+  border-radius: 14px;
+  color: var(--panel-primario);
+  background: rgba(23, 92, 211, 0.07);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.estado-carga,
+.estado-vacio {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.estado-carga {
+  gap: 1rem;
+  color: var(--panel-texto-secundario);
+}
+
+.estado-vacio {
+  padding: 3rem 1.5rem;
+  border: 1px dashed #cfd4dc;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.estado-vacio > i {
+  margin-bottom: 1rem;
+  color: #98a2b3;
+  font-size: 2.6rem;
+}
+
+.estado-vacio h2 {
+  margin-bottom: 0.45rem;
+  font-size: 1.15rem;
+}
+
+.estado-vacio p {
+  margin: 0;
+  color: var(--panel-texto-secundario);
+  font-size: 0.9rem;
+}
+
+.boton-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 1.25rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 9px;
+  color: #344054;
+  background: #ffffff;
+  font-size: 0.83rem;
+  font-weight: 600;
+}
+
+.boton-volver:hover {
+  background: #f9fafb;
+}
+
+@media (max-width: 850px) {
+  .barra-principal {
+    padding: 0 1rem;
+  }
+
+  .usuario-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .barra-principal {
+    min-height: auto;
+    align-items: flex-start;
+    flex-direction: column;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .barra-acciones {
+    width: 100%;
+  }
+
+  .boton-navegacion,
+  .boton-salir {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .encabezado-vista {
+    flex-direction: column;
+    padding: 1.3rem;
+  }
+
+  .contador-registros {
+    width: 100%;
+    min-height: 50px;
+  }
+}
