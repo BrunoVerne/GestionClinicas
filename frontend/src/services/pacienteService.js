@@ -1,5 +1,31 @@
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
+
+export async function crearPaciente(datosPaciente) {
+  const respuesta = await fetch(`${API_URL}/pacientes`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(datosPaciente),
+  });
+
+  const contenido = await respuesta.json().catch(() => null);
+
+  if (!respuesta.ok) {
+    const error = new Error(
+      contenido?.error || 'No se pudo crear el paciente',
+    );
+
+    error.errores = contenido?.errores || {};
+
+    throw error;
+  }
+
+  return contenido;
+}
+
 export async function obtenerPacientes() {
   const url = `${API_URL}/pacientes`;
 
@@ -58,3 +84,5 @@ export async function actualizarPaciente(dni, datos) {
 
   return contenido;
 }
+
+

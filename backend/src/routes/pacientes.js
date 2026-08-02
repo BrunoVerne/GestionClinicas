@@ -42,8 +42,16 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const paciente = await prisma.paciente.create({
-      data: validacion.datos
+        const paciente = await prisma.paciente.create({
+      data: {
+        ...validacion.datos,
+        historiaClinica: {
+          create: {},
+        },
+      },
+      include: {
+        historiaClinica: true,
+      },
     });
 
     return res.status(201).json(paciente);

@@ -50,6 +50,7 @@ router.get('/:dni', async (req, res) => {
           },
         },
         tratamientos: {
+          include: { medico: true},
           orderBy: { fechaInicio: 'desc' }
         },
         antecedentes: true,

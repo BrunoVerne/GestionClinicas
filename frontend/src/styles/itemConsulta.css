@@ -140,3 +140,119 @@
     align-self: flex-start;
   }
 }
+
+
+
+
+.item-consulta-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.25rem;
+  background-color: #fafbfc;
+  border-top: 1px solid #edf0f4;
+}
+
+.item-consulta-medico {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.boton-eliminar-consulta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  color: #dc3545;
+  background-color: transparent;
+  border: 1px solid #dc3545;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.boton-eliminar-consulta:hover {
+  color: #ffffff;
+  background-color: #dc3545;
+}
+
+.item-consulta-confirmacion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #fff4f4;
+  border: 1px solid #f2b8bd;
+  border-radius: 10px;
+}
+
+.item-consulta-confirmacion strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: #842029;
+}
+
+.item-consulta-confirmacion p {
+  margin: 0;
+  color: #6c3a3f;
+  font-size: 0.84rem;
+}
+
+.item-consulta-confirmacion-acciones {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.5rem;
+}
+
+.boton-cancelar-eliminacion,
+.boton-confirmar-eliminacion {
+  padding: 0.5rem 0.75rem;
+  border-radius: 7px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.boton-cancelar-eliminacion {
+  color: #4b5563;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+}
+
+.boton-confirmar-eliminacion {
+  color: #ffffff;
+  background-color: #dc3545;
+  border: 1px solid #dc3545;
+}
+
+.boton-cancelar-eliminacion:disabled,
+.boton-confirmar-eliminacion:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.item-consulta-error {
+  padding: 0.75rem;
+  color: #842029;
+  background-color: #f8d7da;
+  border-radius: 8px;
+  font-size: 0.84rem;
+}
+
+@media (max-width: 650px) {
+  .item-consulta-pie,
+  .item-consulta-confirmacion {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .boton-eliminar-consulta {
+    align-self: flex-end;
+  }
+
+  .item-consulta-confirmacion-acciones {
+    justify-content: flex-end;
+  }
+}

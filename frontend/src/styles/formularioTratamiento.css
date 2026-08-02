@@ -1,0 +1,208 @@
+.formulario-tratamiento {
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(31, 41, 55, 0.08);
+}
+
+.formulario-tratamiento__contenido {
+  padding: 1.25rem;
+}
+
+.formulario-tratamiento__encabezado {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
+.formulario-tratamiento__icono {
+  color: #0d6efd;
+  font-size: 1.2rem;
+}
+
+.formulario-tratamiento__titulo {
+  margin: 0;
+  color: #263244;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.formulario-tratamiento__error {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  color: #842029;
+  background-color: #f8d7da;
+  border: 1px solid #f5c2c7;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+.formulario-tratamiento__campos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.formulario-tratamiento__grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.formulario-tratamiento__grupo--descripcion {
+  margin-bottom: 1rem;
+}
+
+.formulario-tratamiento__label {
+  color: #354154;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.formulario-tratamiento__input,
+.formulario-tratamiento__select,
+.formulario-tratamiento__textarea {
+  width: 100%;
+  padding: 0.72rem 0.85rem;
+  color: #263244;
+  background-color: #ffffff;
+  border: 1px solid #cfd7e3;
+  border-radius: 9px;
+  font: inherit;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.formulario-tratamiento__textarea {
+  min-height: 105px;
+  resize: vertical;
+}
+
+.formulario-tratamiento__input::placeholder,
+.formulario-tratamiento__textarea::placeholder {
+  color: #9aa4b2;
+}
+
+.formulario-tratamiento__input:focus,
+.formulario-tratamiento__select:focus,
+.formulario-tratamiento__textarea:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.14);
+}
+
+.formulario-tratamiento__input:disabled,
+.formulario-tratamiento__select:disabled,
+.formulario-tratamiento__textarea:disabled {
+  cursor: not-allowed;
+  color: #7b8492;
+  background-color: #f3f5f7;
+}
+
+.formulario-tratamiento__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background-color: #fafbfc;
+  border-top: 1px solid #e5e9ef;
+}
+
+.formulario-tratamiento__boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 40px;
+  padding: 0.6rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.formulario-tratamiento__boton:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.formulario-tratamiento__boton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.formulario-tratamiento__boton--cancelar {
+  color: #566273;
+  background-color: #ffffff;
+  border-color: #cfd7e3;
+}
+
+.formulario-tratamiento__boton--cancelar:hover:not(:disabled) {
+  background-color: #f1f3f5;
+  border-color: #aeb8c5;
+}
+
+.formulario-tratamiento__boton--guardar {
+  color: #ffffff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.formulario-tratamiento__boton--guardar:hover:not(:disabled) {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+.formulario-tratamiento__spinner {
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: formulario-tratamiento-girar 0.7s linear infinite;
+}
+
+@keyframes formulario-tratamiento-girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .formulario-tratamiento__campos {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .formulario-tratamiento__grupo:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 650px) {
+  .formulario-tratamiento__campos {
+    grid-template-columns: 1fr;
+  }
+
+  .formulario-tratamiento__grupo:last-child {
+    grid-column: auto;
+  }
+
+  .formulario-tratamiento__acciones {
+    flex-direction: column-reverse;
+  }
+
+  .formulario-tratamiento__boton {
+    width: 100%;
+  }
+}

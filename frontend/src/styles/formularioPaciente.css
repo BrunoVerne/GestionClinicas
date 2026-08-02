@@ -1,0 +1,115 @@
+.formulario-paciente {
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(31, 41, 55, 0.08);
+}
+
+.formulario-paciente__contenido {
+  padding: 1.25rem;
+}
+
+.formulario-paciente__encabezado {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
+.formulario-paciente__encabezado i {
+  color: #0d6efd;
+  font-size: 1.25rem;
+}
+
+.formulario-paciente__encabezado h3 {
+  margin: 0;
+  color: #263244;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.formulario-paciente__error {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  color: #842029;
+  background: #f8d7da;
+  border: 1px solid #f5c2c7;
+  border-radius: 9px;
+}
+
+.formulario-paciente__campos {
+  display: grid;
+  grid-template-columns:
+    minmax(150px, 0.8fr)
+    minmax(240px, 1.8fr)
+    minmax(130px, 0.7fr)
+    minmax(130px, 0.7fr);
+  gap: 1rem;
+}
+
+.formulario-paciente__grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.formulario-paciente__grupo label {
+  color: #354154;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.formulario-paciente__grupo input {
+  width: 100%;
+  padding: 0.72rem 0.85rem;
+  color: #263244;
+  background: #ffffff;
+  border: 1px solid #cfd7e3;
+  border-radius: 9px;
+  font: inherit;
+}
+
+.formulario-paciente__grupo input:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.14);
+}
+
+.formulario-paciente__grupo input:disabled {
+  cursor: not-allowed;
+  background: #f3f5f7;
+}
+
+.formulario-paciente__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #fafbfc;
+  border-top: 1px solid #e5e9ef;
+}
+
+@media (max-width: 900px) {
+  .formulario-paciente__campos {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 580px) {
+  .formulario-paciente__campos {
+    grid-template-columns: 1fr;
+  }
+
+  .formulario-paciente__acciones {
+    flex-direction: column-reverse;
+  }
+
+  .formulario-paciente__acciones .btn {
+    width: 100%;
+  }
+}

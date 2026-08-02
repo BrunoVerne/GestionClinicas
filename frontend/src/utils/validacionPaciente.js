@@ -75,3 +75,63 @@ export function validarDni(valor) {
 
   return '';
 }
+
+
+export function validarFormularioPaciente({
+  dni,
+  nombre,
+  peso,
+  altura,
+}) {
+  const errores = {};
+
+  const dniNumero = Number(dni);
+  const pesoNumero = Number(peso);
+  const alturaNumero = Number(altura);
+  const nombreLimpio = String(nombre ?? '').trim();
+
+  if (!Number.isInteger(dniNumero)) {
+    errores.dni = 'El DNI debe ser un número entero';
+  } else if (
+    dniNumero < 1_000_000 ||
+    dniNumero > 99_999_999
+  ) {
+    errores.dni = 'El DNI debe tener entre 7 y 8 dígitos';
+  }
+
+  if (nombreLimpio.length < 2) {
+    errores.nombre =
+      'El nombre debe tener al menos 2 caracteres';
+  } else if (nombreLimpio.length > 100) {
+    errores.nombre =
+      'El nombre no puede superar los 100 caracteres';
+  }
+
+  if (!Number.isFinite(pesoNumero)) {
+    errores.peso = 'El peso debe ser un número';
+  } else if (pesoNumero < 1 || pesoNumero > 500) {
+    errores.peso =
+      'El peso debe estar entre 1 y 500 kg';
+  }
+
+  if (!Number.isFinite(alturaNumero)) {
+    errores.altura = 'La altura debe ser un número';
+  } else if (
+    alturaNumero < 0.3 ||
+    alturaNumero > 2.7
+  ) {
+    errores.altura =
+      'La altura debe estar entre 0.30 y 2.70 metros';
+  }
+
+  return {
+    valido: Object.keys(errores).length === 0,
+    errores,
+    datos: {
+      dni: dniNumero,
+      nombre: nombreLimpio,
+      peso: pesoNumero,
+      altura: alturaNumero,
+    },
+  };
+}

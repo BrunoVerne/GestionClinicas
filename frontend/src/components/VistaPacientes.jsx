@@ -1,7 +1,12 @@
 import CartaDePaciente from './CartaDePaciente';
+import FormularioPaciente from './Docs/FormularioPaciente';
 
 export default function VistaPacientes({
   pacientes,
+  mostrandoFormularioPaciente,
+  onMostrarFormularioPaciente,
+  onCancelarFormularioPaciente,
+  onPacienteCreado,
   onVerHistoria,
   onVerCondicionFisica,
 }) {
@@ -21,8 +26,24 @@ export default function VistaPacientes({
           </p>
         </div>
 
-        
+        {!mostrandoFormularioPaciente && (
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={onMostrarFormularioPaciente}
+          >
+            <i className="bi bi-person-plus me-1" />
+            Nuevo paciente
+          </button>
+        )}
       </header>
+
+      {mostrandoFormularioPaciente && (
+        <FormularioPaciente
+          onPacienteCreado={onPacienteCreado}
+          onCancelar={onCancelarFormularioPaciente}
+        />
+      )}
 
       {pacientes.length === 0 ? (
         <div className="estado-vacio">
@@ -44,7 +65,9 @@ export default function VistaPacientes({
               <CartaDePaciente
                 paciente={paciente}
                 onVerHistoria={onVerHistoria}
-                onVerCondicionFisica={onVerCondicionFisica}
+                onVerCondicionFisica={
+                  onVerCondicionFisica
+                }
               />
             </div>
           ))}
@@ -53,3 +76,4 @@ export default function VistaPacientes({
     </section>
   );
 }
+

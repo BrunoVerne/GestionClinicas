@@ -25,3 +25,24 @@ export async function crearConsulta(datosConsulta) {
 
   return contenido;
 }
+
+
+export async function eliminarConsulta(numeroConsulta) {
+  const respuesta = await fetch(
+    `${API_URL}/consultas/${numeroConsulta}`,
+    {
+      method: 'DELETE',
+      credentials: 'include',
+    },
+  );
+
+  const contenido = await respuesta.json().catch(() => null);
+
+  if (!respuesta.ok) {
+    throw new Error(
+      contenido?.error || 'No se pudo eliminar la consulta',
+    );
+  }
+
+  return contenido;
+}

@@ -17,10 +17,7 @@ export default function VistaMedicos({ medicos }) {
           </p>
         </div>
 
-        <div className="contador-registros">
-          <i className="bi bi-person-badge" />
-          <span>{medicos.length}</span>
-        </div>
+        
       </header>
 
       {medicos.length === 0 ? (

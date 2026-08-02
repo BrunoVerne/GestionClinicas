@@ -1,23 +1,34 @@
-require('dotenv').config();
-
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
+
+dotenv.config({
+  path: '../.env',
+});
+
+const PORT = process.env.PORT;
 
 const app = express();
-const PORT = process.env.PORT || 3001;
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin:
+      process.env.FRONTEND_URL,
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json());
-app.use(cookieParser()); // Tiene que estar antes de app.use('/auth', ...)
+app.use(cookieParser());
 
-app.use('/auth', require('./routes/auth'));
+app.use(
+  '/uploads',
+  express.static(
+    path.join(__dirname, '../uploads'),
+  ),
+);
 
 app.use('/medicos', require('./routes/medicos'));
 app.use('/pacientes', require('./routes/pacientes'));
@@ -26,7 +37,10 @@ app.use('/consultas', require('./routes/consultas'));
 app.use('/tratamientos', require('./routes/tratamientos'));
 app.use('/antecedentes', require('./routes/antecedentes'));
 app.use('/documentos', require('./routes/documentos'));
+app.use('/auth', require('./routes/auth'));
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(
+    `Servidor corriendo en http://localhost:${PORT}`,
+  );
 });

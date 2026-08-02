@@ -6,12 +6,40 @@ import ItemTratamiento from './Docs/ItemTratamiento'
 import ItemAntecedente from './Docs/ItemAntecedente'
 import ItemDocumento from './Docs/ItemDocumentoGenerico'
 import FormularioConsulta from './Docs/FormularioConsulta';
+import FormularioTratamiento from './Docs/FormularioTratamiento';
+import FormularioAntecedente from './Docs/FormularioAntecedente';
 
 export default function HistoriaClinica({ dni, medicos }) {
   const [historia, setHistoria] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [mostrandoFormularioConsulta, setMostrandoFormularioConsulta] = useState(false);
+  const [mostrandoFormularioTratamiento,setMostrandoFormularioTratamiento,] = useState(false);
+  const [mostrandoFormularioAntecedente,setMostrandoFormularioAntecedente,] = useState(false);
+
+  const agregarTratamiento = (tratamientoCreado) => {
+    setHistoria((historiaActual) => ({
+      ...historiaActual,
+      tratamientos: [
+        tratamientoCreado,
+        ...(historiaActual.tratamientos || []),
+      ],
+    }));
+
+    setMostrandoFormularioTratamiento(false);
+  };
+
+  const agregarAntecedente = (antecedenteCreado) => {
+    setHistoria((historiaActual) => ({
+      ...historiaActual,
+      antecedentes: [
+        antecedenteCreado,
+        ...(historiaActual.antecedentes || []),
+      ],
+    }));
+
+    setMostrandoFormularioAntecedente(false);
+  };
 
   useEffect(() => {
     if (dni) {
@@ -33,6 +61,8 @@ export default function HistoriaClinica({ dni, medicos }) {
     }
   };
 
+  
+
   const agregarConsulta = (consultaCreada) => {
     setHistoria((historiaActual) => ({
       ...historiaActual,
@@ -44,6 +74,8 @@ export default function HistoriaClinica({ dni, medicos }) {
 
     setMostrandoFormularioConsulta(false);
   };
+
+  
 
   if (cargando) return (
     <div className="text-center py-5">
@@ -67,6 +99,55 @@ export default function HistoriaClinica({ dni, medicos }) {
       No se encontró la historia clínica para el DNI {dni}.
     </div>
   );
+
+  const quitarConsulta = (numeroConsulta) => {
+    setHistoria((historiaActual) => ({
+      ...historiaActual,
+      consultas: historiaActual.consultas.filter(
+        (consulta) =>
+          consulta.numeroConsulta !== numeroConsulta,
+      ),
+    }));
+  };
+
+
+  const actualizarTratamiento = (tratamientoActualizado) => {
+    setHistoria((historiaActual) => ({
+      ...historiaActual,
+      tratamientos: (
+        historiaActual.tratamientos || []
+      ).map((tratamiento) =>
+        tratamiento.numeroTratamiento ===
+        tratamientoActualizado.numeroTratamiento
+          ? tratamientoActualizado
+          : tratamiento,
+      ),
+    }));
+  };
+
+  const quitarTratamiento = (numeroTratamiento) => {
+    setHistoria((historiaActual) => ({
+      ...historiaActual,
+      tratamientos: (
+        historiaActual.tratamientos || []
+      ).filter(
+        (tratamiento) =>
+          tratamiento.numeroTratamiento !==
+          numeroTratamiento,
+      ),
+    }));
+  };
+
+  const quitarAntecedente = (id) => {
+    setHistoria((historiaActual) => ({
+      ...historiaActual,
+      antecedentes: (
+        historiaActual.antecedentes || []
+      ).filter(
+        (antecedente) => antecedente.id !== id,
+      ),
+    }));
+  };
 
   return (
     <div>
@@ -105,6 +186,7 @@ export default function HistoriaClinica({ dni, medicos }) {
         ))}
       </ul>
 
+    <div className="tab-content">
       <div className="tab-pane fade show active" id="consultas">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <div>
@@ -145,6 +227,8 @@ export default function HistoriaClinica({ dni, medicos }) {
             <ItemConsulta
               key={consulta.numeroConsulta}
               consulta={consulta}
+              onConsultaEliminada={quitarConsulta}
+
             />
           ))
         ) : (
@@ -153,7 +237,140 @@ export default function HistoriaClinica({ dni, medicos }) {
           </p>
         )}
       </div>
+
+
+      <div className="tab-pane fade" id="tratamientos" role="tabpanel">
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <h5 className="mb-1">
+              Tratamientos
+            </h5>
+
+            <small className="text-muted">
+              Tratamientos indicados al paciente
+            </small>
+          </div>
+
+          {!mostrandoFormularioTratamiento && (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() =>
+                setMostrandoFormularioTratamiento(true)
+              }
+            >
+              <i className="bi bi-plus-lg me-1" />
+              Nuevo tratamiento
+            </button>
+          )}
+        </div>
+
+        {mostrandoFormularioTratamiento && (
+          <FormularioTratamiento
+            dniPaciente={historia.dniPaciente}
+            medicos={medicos}
+            onTratamientoCreado={agregarTratamiento}
+            onCancelar={() =>
+              setMostrandoFormularioTratamiento(false)
+            }
+          />
+        )}
+
+        {historia.tratamientos?.length > 0 ? (
+          historia.tratamientos.map((tratamiento) => (
+            <ItemTratamiento
+              key={tratamiento.numeroTratamiento}
+              tratamiento={tratamiento}
+              onTratamientoActualizado={actualizarTratamiento}
+              onTratamientoEliminado={quitarTratamiento}
+            />
+          ))
+        ) : (
+          <p className="text-muted">
+            Sin tratamientos registrados.
+          </p>
+        )}
+      </div>
+      
+        <div className="tab-pane fade" id="antecedentes" role="tabpanel">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h5 className="mb-1">
+                Antecedentes
+              </h5>
+
+              <small className="text-muted">
+                Antecedentes médicos del paciente
+              </small>
+            </div>
+
+            {!mostrandoFormularioAntecedente && (
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() =>
+                  setMostrandoFormularioAntecedente(true)
+                }
+              >
+                <i className="bi bi-plus-lg me-1" />
+                Nuevo antecedente
+              </button>
+            )}
+          </div>
+
+          {mostrandoFormularioAntecedente && (
+            <FormularioAntecedente
+              dniPaciente={historia.dniPaciente}
+              onAntecedenteCreado={agregarAntecedente}
+              onCancelar={() =>
+                setMostrandoFormularioAntecedente(false)
+              }
+            />
+          )}
+
+          {historia.antecedentes?.length > 0 ? (
+            historia.antecedentes.map((antecedente) => (
+              <ItemAntecedente
+                key={antecedente.id}
+                antecedente={antecedente}
+                onAntecedenteEliminado={quitarAntecedente}
+              />
+            ))
+          ) : (
+            <p className="text-muted">
+              Sin antecedentes registrados.
+            </p>
+          )}
+        </div>
+
+        <div className="tab-pane fade" id="documentos" role="tabpanel">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h5 className="mb-1">
+                Documentos
+              </h5>
+
+              <small className="text-muted">
+                Documentación clínica del paciente
+              </small>
+            </div>
+          </div>
+
+          {historia.documentos?.length > 0 ? (
+            historia.documentos.map((documento) => (
+              <ItemDocumento
+                key={documento.numeroDocumento}
+                documento={documento}
+              />
+            ))
+          ) : (
+            <p className="text-muted">
+              Sin documentos registrados.
+            </p>
+          )}
+        </div>
     </div>
+  </div>
   )
 
 

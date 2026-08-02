@@ -1,27 +1,74 @@
 // src/routes/documentos.js
 const { Router } = require('express');
 const prisma = require('../lib/prisma');
+const {
+  validarDatosDocumento,
+} = require('../utils/validacionDocumento');
 
 const router = Router();
 
 // POST DOCUMENTO
 router.post('/', async (req, res) => {
-  const { numeroExpediente, tipo, archivo, fecha } = req.body;
   try {
-    const documento = await prisma.Documento.create({
-      data: { numeroExpediente, tipo, archivo, fecha: new Date(fecha) }
+    const validacion = validarDatosDocumento(req.body);
+
+    if (!validacion.valido) {
+      return res.status(400).json({
+        error: 'Datos del documento inválidos',
+        errores: validacion.errores,
+      });
+    }
+
+    const {
+      dniPaciente,
+      tipo,
+      archivo,
+      fecha,
+    } = validacion.datos;
+
+    const historiaClinica =
+      await prisma.historiaClinica.findUnique({
+        where: {
+          dniPaciente,
+        },
+      });
+
+    if (!historiaClinica) {
+      return res.status(404).json({
+        error:
+          `No existe una historia clínica para el paciente con DNI ${dniPaciente}`,
+      });
+    }
+
+    const documento = await prisma.documento.create({
+      data: {
+        numeroExpediente:
+          historiaClinica.expediente,
+        tipo,
+        archivo,
+        fecha,
+      },
     });
-    res.json(documento);
+
+    return res.status(201).json(documento);
   } catch (error) {
-    console.error('Error al crear documento:', error);
-    res.status(500).json({ error: 'Error interno del servidor al crear el documento' });
+    console.error(
+      'Error al crear documento:',
+      error,
+    );
+
+    return res.status(500).json({
+      error:
+        'Error interno del servidor al crear el documento',
+    });
   }
 });
+
 
 // GET DOCUMENTOS
 router.get('/', async (req, res) => {
   try {
-    const documentos = await prisma.Documento.findMany();
+    const documentos = await prisma.documento.findMany();
     res.json(documentos);
   } catch (error) {
     console.error('Error al obtener documentos:', error);
@@ -38,7 +85,7 @@ router.get('/:numeroDocumento', async (req, res) => {
   }
 
   try {
-    const documento = await prisma.Documento.findUnique({
+    const documento = await prisma.documento.findUnique({
       where: { numeroDocumento },
       include: {
         historiaClinica: { include: { paciente: true } }
@@ -65,13 +112,13 @@ router.delete('/:numeroDocumento', async (req, res) => {
   }
 
   try {
-    const documento = await prisma.Documento.findUnique({ where: { numeroDocumento } });
+    const documento = await prisma.documento.findUnique({ where: { numeroDocumento } });
 
     if (!documento) {
       return res.status(404).json({ error: `Documento con número ${numeroDocumento} no encontrado` });
     }
 
-    await prisma.Documento.delete({ where: { numeroDocumento } });
+    await prisma.documento.delete({ where: { numeroDocumento } });
     res.json({ message: 'Documento eliminado correctamente', numeroDocumento });
   } catch (error) {
     console.error('Error al eliminar documento:', error);
