@@ -1,7 +1,7 @@
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export async function obtenerPacientes() {
-  const url = `${BACKEND_URL}/pacientes`;
+  const url = `${API_URL}/pacientes`;
 
   console.log('GET pacientes:', url);
 
@@ -31,4 +31,30 @@ export async function obtenerPacientes() {
   }
 
   return data;
+}
+
+
+export async function actualizarPaciente(dni, datos) {
+  const respuesta = await fetch(`${API_URL}/pacientes/${dni}`, {
+    method: 'PATCH',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(datos)
+  });
+
+  const contenido = await respuesta.json().catch(() => null);
+
+  if (!respuesta.ok) {
+    const mensaje =
+      contenido?.error ??
+      'No se pudieron actualizar los datos del paciente';
+
+    const error = new Error(mensaje);
+    error.errores = contenido?.errores ?? {};
+    throw error;
+  }
+
+  return contenido;
 }

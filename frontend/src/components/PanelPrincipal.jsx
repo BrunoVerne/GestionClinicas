@@ -77,6 +77,30 @@ export default function PanelPrincipal({
     setVista('condicion');
   };
 
+  const manejarPacienteActualizado = (pacienteActualizado) => {
+    setPacienteActivo((pacienteActual) => {
+      if (!pacienteActual) {
+        return pacienteActualizado;
+      }
+
+      return {
+        ...pacienteActual,
+        ...pacienteActualizado,
+      };
+    });
+
+    setPacientes((pacientesActuales) =>
+      pacientesActuales.map((paciente) =>
+        paciente.dni === pacienteActualizado.dni
+          ? {
+              ...paciente,
+              ...pacienteActualizado,
+            }
+          : paciente,
+      ),
+    );
+  };
+
   const renderizarVista = () => {
     switch (vista) {
       case 'pacientes':
@@ -97,6 +121,7 @@ export default function PanelPrincipal({
         return (
           <VistaHistoriaClinica
             dni={dniSeleccionado}
+            medicos={medicos}
             onVolver={mostrarPacientes}
           />
         );
@@ -106,6 +131,7 @@ export default function PanelPrincipal({
           <VistaCondicionFisica
             paciente={pacienteActivo}
             onVolver={mostrarPacientes}
+            onPacienteActualizado={manejarPacienteActualizado}
           />
         );
 

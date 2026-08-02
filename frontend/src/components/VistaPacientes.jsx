@@ -21,10 +21,7 @@ export default function VistaPacientes({
           </p>
         </div>
 
-        <div className="contador-registros">
-          <i className="bi bi-people" />
-          <span>{pacientes.length}</span>
-        </div>
+        
       </header>
 
       {pacientes.length === 0 ? (

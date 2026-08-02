@@ -1,0 +1,142 @@
+.item-consulta {
+  margin-bottom: 1rem;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #e6eaf0;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(30, 52, 75, 0.07);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.item-consulta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(30, 52, 75, 0.11);
+}
+
+.item-consulta-encabezado {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.item-consulta-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.item-consulta-titulo i {
+  flex-shrink: 0;
+  color: #0d6efd;
+  font-size: 1.15rem;
+}
+
+.item-consulta-titulo h3 {
+  margin: 0;
+  color: #253347;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.item-consulta-fecha {
+  flex-shrink: 0;
+  padding: 0.4rem 0.7rem;
+  color: #0d6efd;
+  background-color: #eaf2ff;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.item-consulta-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+}
+
+.item-consulta-seccion,
+.item-consulta-observaciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.item-consulta-etiqueta {
+  color: #798596;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.item-consulta-seccion p,
+.item-consulta-observaciones p {
+  margin: 0;
+  color: #334155;
+  font-size: 0.93rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.item-consulta-observaciones {
+  padding: 0.85rem 1rem;
+  background-color: #f7f9fc;
+  border-left: 3px solid #aebdce;
+  border-radius: 8px;
+}
+
+.item-consulta-medico {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.25rem;
+  background-color: #fafbfc;
+  border-top: 1px solid #edf0f4;
+}
+
+.item-consulta-medico-icono {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  place-items: center;
+  color: #198754;
+  background-color: #e9f7ef;
+  border-radius: 50%;
+}
+
+.item-consulta-medico div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
+.item-consulta-medico span {
+  color: #8791a0;
+  font-size: 0.72rem;
+}
+
+.item-consulta-medico strong {
+  color: #354154;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+@media (max-width: 576px) {
+  .item-consulta-encabezado {
+    flex-direction: column;
+  }
+
+  .item-consulta-fecha {
+    align-self: flex-start;
+  }
+}

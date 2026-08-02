@@ -1,7 +1,7 @@
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export async function obtenerMedicos() {
-  const url = `${BACKEND_URL}/medicos`;
+  const url = `${API_URL}/medicos`;
 
   console.log('GET médicos:', url);
 

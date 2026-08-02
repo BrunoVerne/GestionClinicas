@@ -1,6 +1,9 @@
+const API_URL = import.meta.env.VITE_BACKEND_URL;
+
+
 export async function getHistoriaByDni(dni) {
   try {
-    const response = await fetch(`http://localhost:3001/historias/${dni}`);
+    const response = await fetch(`${API_URL}/${dni}`);
     
     if (!response.ok) {
       if (response.status === 404) {

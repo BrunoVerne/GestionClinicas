@@ -1,0 +1,159 @@
+.formulario-consulta {
+  margin-bottom: 1.5rem;
+  padding: 1.4rem;
+  background-color: #ffffff;
+  border: 1px solid #dfe5ec;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(30, 52, 75, 0.08);
+}
+
+.formulario-consulta-encabezado {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.formulario-consulta-encabezado h3 {
+  margin: 0 0 0.25rem;
+  color: #253347;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.formulario-consulta-encabezado p {
+  margin: 0;
+  color: #7c8797;
+  font-size: 0.88rem;
+}
+
+.formulario-consulta-cerrar {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  place-items: center;
+  color: #64748b;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+}
+
+.formulario-consulta-cerrar:hover {
+  background-color: #f1f5f9;
+}
+
+.formulario-consulta-fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formulario-consulta-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.formulario-consulta-campo label {
+  color: #405065;
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.formulario-consulta-campo label span {
+  margin-left: 0.35rem;
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-weight: 400;
+}
+
+.formulario-consulta-campo input,
+.formulario-consulta-campo select,
+.formulario-consulta-campo textarea {
+  width: 100%;
+  padding: 0.72rem 0.8rem;
+  color: #253347;
+  background-color: #ffffff;
+  border: 1px solid #cfd7e2;
+  border-radius: 8px;
+  outline: none;
+  font: inherit;
+}
+
+.formulario-consulta-campo textarea {
+  resize: vertical;
+}
+
+.formulario-consulta-campo input:focus,
+.formulario-consulta-campo select:focus,
+.formulario-consulta-campo textarea:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+}
+
+.formulario-consulta-campo .campo-invalido {
+  border-color: #dc3545;
+}
+
+.formulario-consulta-campo .campo-invalido:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
+}
+
+.mensaje-error {
+  color: #dc3545;
+  font-size: 0.78rem;
+}
+
+.formulario-consulta-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  padding-top: 1rem;
+  border-top: 1px solid #edf0f4;
+}
+
+.boton-cancelar-consulta,
+.boton-guardar-consulta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 40px;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.boton-cancelar-consulta {
+  color: #526173;
+  background-color: #ffffff;
+  border: 1px solid #cfd7e2;
+}
+
+.boton-guardar-consulta {
+  color: #ffffff;
+  background-color: #0d6efd;
+  border: 1px solid #0d6efd;
+}
+
+.boton-guardar-consulta:hover {
+  background-color: #0b5ed7;
+}
+
+.boton-cancelar-consulta:disabled,
+.boton-guardar-consulta:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 700px) {
+  .formulario-consulta-fila {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

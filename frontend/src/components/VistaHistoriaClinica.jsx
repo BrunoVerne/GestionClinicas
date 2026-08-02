@@ -2,6 +2,7 @@ import HistoriaClinica from './HistoriaClinica';
 
 export default function VistaHistoriaClinica({
   dni,
+  medicos,
   onVolver,
 }) {
   if (!dni) {
@@ -23,7 +24,10 @@ export default function VistaHistoriaClinica({
         Volver a pacientes
       </button>
 
-      <HistoriaClinica dni={dni} />
+      <HistoriaClinica
+        dni={dni}
+        medicos={medicos}
+      />
     </section>
   );
 }

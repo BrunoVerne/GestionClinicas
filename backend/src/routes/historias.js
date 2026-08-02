@@ -8,7 +8,7 @@ const router = Router();
 router.post('/', async (req, res) => {
   const { dniPaciente } = req.body;
   try {
-    const historia = await prisma.HistoriaClinica.create({
+    const historia = await prisma.historiaClinica.create({
       data: { dniPaciente }
     });
     res.json(historia);
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
 // GET HISTORIAS CLÍNICAS
 router.get('/', async (req, res) => {
   try {
-    const total = await prisma.HistoriaClinica.findMany();
+    const total = await prisma.historiaClinica.findMany();
     res.json({ entidad: 'historias_clinicas', total });
   } catch (error) {
     console.error(error);
@@ -35,14 +35,19 @@ router.get('/:dni', async (req, res) => {
   const { dni } = req.params;
   
   try {
-    const historia = await prisma.HistoriaClinica.findUnique({
+    const historia = await prisma.historiaClinica.findUnique({
       where: { 
         dniPaciente: parseInt(dni)  // Convierte el DNI a número
       },
       include: {
         paciente: true,        // Incluye datos del paciente
         consultas: {
-          orderBy: { fecha: 'desc' }  // Ordenar por fecha descendente
+          include: {
+            medico: true,
+          },
+          orderBy: {
+            fecha: 'desc',
+          },
         },
         tratamientos: {
           orderBy: { fechaInicio: 'desc' }

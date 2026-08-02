@@ -3,6 +3,7 @@ import CondicionFisicaPaciente from './CondicionFisicaPaciente';
 export default function VistaCondicionFisica({
   paciente,
   onVolver,
+  onPacienteActualizado,
 }) {
   if (!paciente) {
     return (
@@ -23,7 +24,10 @@ export default function VistaCondicionFisica({
         Volver a pacientes
       </button>
 
-      <CondicionFisicaPaciente paciente={paciente} />
+      <CondicionFisicaPaciente
+        paciente={paciente}
+        onPacienteActualizado={onPacienteActualizado}
+      />
     </section>
   );
 }

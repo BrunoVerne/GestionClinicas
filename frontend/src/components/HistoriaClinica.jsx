@@ -5,11 +5,13 @@ import ItemConsulta from './Docs/ItemConsulta'
 import ItemTratamiento from './Docs/ItemTratamiento'
 import ItemAntecedente from './Docs/ItemAntecedente'
 import ItemDocumento from './Docs/ItemDocumentoGenerico'
+import FormularioConsulta from './Docs/FormularioConsulta';
 
-export default function HistoriaClinica({ dni }) {
+export default function HistoriaClinica({ dni, medicos }) {
   const [historia, setHistoria] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
+  const [mostrandoFormularioConsulta, setMostrandoFormularioConsulta] = useState(false);
 
   useEffect(() => {
     if (dni) {
@@ -29,6 +31,18 @@ export default function HistoriaClinica({ dni }) {
     } finally {
       setCargando(false);
     }
+  };
+
+  const agregarConsulta = (consultaCreada) => {
+    setHistoria((historiaActual) => ({
+      ...historiaActual,
+      consultas: [
+        consultaCreada,
+        ...(historiaActual.consultas || []),
+      ],
+    }));
+
+    setMostrandoFormularioConsulta(false);
   };
 
   if (cargando) return (
@@ -91,31 +105,57 @@ export default function HistoriaClinica({ dni }) {
         ))}
       </ul>
 
-      <div className="tab-content">
-        <div className="tab-pane fade show active" id="consultas">
-          {historia.consultas?.length > 0
-            ? historia.consultas.map(c => <ItemConsulta key={c.numeroConsulta} consulta={c} />)
-            : <p className="text-muted">Sin consultas registradas.</p>}
+      <div className="tab-pane fade show active" id="consultas">
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <h5 className="mb-1">Consultas médicas</h5>
+
+            <small className="text-muted">
+              Registro de atenciones del paciente
+            </small>
+          </div>
+
+          {!mostrandoFormularioConsulta && (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() =>
+                setMostrandoFormularioConsulta(true)
+              }
+            >
+              <i className="bi bi-plus-lg me-1" />
+              Nueva consulta
+            </button>
+          )}
         </div>
 
-        <div className="tab-pane fade" id="tratamientos">
-          {historia.tratamientos?.length > 0
-            ? historia.tratamientos.map(t => <ItemTratamiento key={t.numeroTratamiento} tratamiento={t} />)
-            : <p className="text-muted">Sin tratamientos registrados.</p>}
-        </div>
+        {mostrandoFormularioConsulta && (
+          <FormularioConsulta
+            dniPaciente={historia.dniPaciente}
+            medicos={medicos}
+            onConsultaCreada={agregarConsulta}
+            onCancelar={() =>
+              setMostrandoFormularioConsulta(false)
+            }
+          />
+        )}
 
-        <div className="tab-pane fade" id="antecedentes">
-          {historia.antecedentes?.length > 0
-            ? historia.antecedentes.map(a => <ItemAntecedente key={a.id} antecedente={a} />)
-            : <p className="text-muted">Sin antecedentes registrados.</p>}
-        </div>
-
-        <div className="tab-pane fade" id="documentos">
-          {historia.documentos?.length > 0
-            ? historia.documentos.map(d => <ItemDocumento key={d.numeroDocumento} documento={d} />)
-            : <p className="text-muted">Sin documentos registrados.</p>}
-        </div>
+        {historia.consultas?.length > 0 ? (
+          historia.consultas.map((consulta) => (
+            <ItemConsulta
+              key={consulta.numeroConsulta}
+              consulta={consulta}
+            />
+          ))
+        ) : (
+          <p className="text-muted">
+            Sin consultas registradas.
+          </p>
+        )}
       </div>
     </div>
   )
+
+
+  
 }
