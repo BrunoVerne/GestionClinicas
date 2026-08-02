@@ -1,2 +1,4 @@
 .env
-.package-lock.json
+.package-lock.jsonnode_modules/
+frontend/node_modules/
+backend/node_modules/
