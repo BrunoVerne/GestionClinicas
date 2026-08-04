@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import Login from './Login';
-import PanelPrincipal from './components/PanelPrincipal';
+import PanelPrincipal from './components/panel/PanelPrincipal';
 
 import {
   logout,

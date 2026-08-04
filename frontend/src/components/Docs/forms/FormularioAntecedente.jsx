@@ -2,13 +2,13 @@ import { useState } from 'react';
 
 import {
   crearAntecedente,
-} from '../../services/antecedenteService';
+} from '../../../services/antecedenteService';
 
 import {
   validarFormularioAntecedente,
-} from '../../utils/validacionAntecedente';
+} from '../../../utils/validacionAntecedente';
 
-import '../../styles/formularioAntecedente.css';
+import '../../../styles/forms/formularioAntecedente.css';
 
 export default function FormularioAntecedente({
   dniPaciente,

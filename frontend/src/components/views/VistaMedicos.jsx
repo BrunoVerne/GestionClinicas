@@ -1,6 +1,13 @@
-import CartaDeMedico from './CartaDeMedico';
+import CartaDeMedico from '../cards/CartaDeMedico';
+import FormularioMedico from '../Docs/forms/FormularioMedico';
 
-export default function VistaMedicos({ medicos }) {
+export default function VistaMedicos({
+  medicos,
+  mostrandoFormularioMedico,
+  onMostrarFormularioMedico,
+  onCancelarFormularioMedico,
+  onMedicoCreado,
+}) {
   return (
     <section>
       <header className="encabezado-vista">
@@ -17,8 +24,26 @@ export default function VistaMedicos({ medicos }) {
           </p>
         </div>
 
-        
+        {!mostrandoFormularioMedico && (
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={onMostrarFormularioMedico}
+          >
+            <i className="bi bi-person-plus me-2" />
+            Nuevo médico
+          </button>
+        )}
       </header>
+
+      {mostrandoFormularioMedico && (
+        <div className="mb-4">
+          <FormularioMedico
+            onMedicoCreado={onMedicoCreado}
+            onCancelar={onCancelarFormularioMedico}
+          />
+        </div>
+      )}
 
       {medicos.length === 0 ? (
         <div className="estado-vacio">
@@ -27,7 +52,8 @@ export default function VistaMedicos({ medicos }) {
           <h2>No hay médicos registrados</h2>
 
           <p>
-            Los médicos registrados aparecerán en esta sección.
+            Los médicos registrados aparecerán en esta
+            sección.
           </p>
         </div>
       ) : (

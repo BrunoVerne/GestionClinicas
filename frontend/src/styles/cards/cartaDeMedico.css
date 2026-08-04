@@ -1,0 +1,239 @@
+.carta-medico {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.carta-medico:hover {
+  transform: translateY(-3px);
+  border-color: #b8d9c8;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.11);
+}
+
+.carta-medico__encabezado {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 20px;
+
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #198754,
+      #146c43
+    );
+}
+
+.carta-medico--inactivo
+  .carta-medico__encabezado {
+  background:
+    linear-gradient(
+      135deg,
+      #64748b,
+      #475569
+    );
+}
+
+.carta-medico__identidad {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.carta-medico__avatar {
+  display: grid;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+
+  font-size: 1.2rem;
+
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+}
+
+.carta-medico__etiqueta {
+  display: block;
+  margin-bottom: 2px;
+
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  opacity: 0.75;
+}
+
+.carta-medico__nombre {
+  margin: 0;
+
+  overflow: hidden;
+
+  font-size: 1.05rem;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+}
+
+.carta-medico__estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  flex-shrink: 0;
+  padding: 6px 9px;
+
+  font-size: 0.72rem;
+  font-weight: 650;
+
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+}
+
+.carta-medico__estado-punto {
+  width: 7px;
+  height: 7px;
+
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+.carta-medico__contenido {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 22px;
+  padding: 20px;
+}
+
+.carta-medico__resumen {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.carta-medico__campo-etiqueta {
+  display: block;
+  margin-bottom: 4px;
+
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.carta-medico__matricula {
+  margin: 0;
+
+  color: #1e293b;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.carta-medico__especialidades {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.carta-medico__especialidad {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 9px;
+
+  color: #146c43;
+  font-size: 0.73rem;
+  font-weight: 650;
+
+  background: #eaf7f0;
+  border: 1px solid #cce9da;
+  border-radius: 999px;
+}
+
+.carta-medico__sin-datos {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.carta-medico__datos {
+  display: grid;
+  gap: 15px;
+}
+
+.carta-medico__dato {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.carta-medico__dato-icono {
+  display: grid;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+
+  color: #198754;
+  font-size: 0.92rem;
+
+  background: #eef8f3;
+  border-radius: 9px;
+}
+
+.carta-medico__dato-icono--emergencia {
+  color: #b42318;
+  background: #fff1f0;
+}
+
+.carta-medico__dato-contenido {
+  min-width: 0;
+}
+
+.carta-medico__dato-valor {
+  display: block;
+
+  color: #334155;
+  font-size: 0.87rem;
+  line-height: 1.4;
+}
+
+.carta-medico__dato-valor--ajustable {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 576px) {
+  .carta-medico__encabezado {
+    padding: 18px;
+  }
+
+  .carta-medico__contenido {
+    padding: 18px;
+  }
+
+  .carta-medico__estado {
+    padding: 5px 8px;
+  }
+}

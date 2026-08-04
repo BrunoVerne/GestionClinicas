@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { crearConsulta } from '../../services/consultaService';
+import { crearConsulta } from '../../../services/consultaService';
 
 import {
   validarFechaConsulta,
@@ -8,9 +8,9 @@ import {
   validarMotivoConsulta,
   validarDiagnosticoConsulta,
   validarObservacionesConsulta,
-} from '../../utils/validacionConsulta';
+} from '../../../utils/validacionConsulta';
 
-import '../../styles/formularioConsulta.css';
+import '../../../styles/forms/formularioConsulta.css';
 
 function obtenerFechaActual() {
   const fecha = new Date();

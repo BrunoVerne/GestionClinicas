@@ -2,9 +2,9 @@ import { useState } from 'react';
 
 import {
   crearTratamiento,
-} from '../../services/tratamientoService';
+} from '../../../services/tratamientoService';
 
-import '../../styles/formularioTratamiento.css';
+import '../../../styles/forms/formularioTratamiento.css';
 
 export default function FormularioTratamiento({
   dniPaciente,

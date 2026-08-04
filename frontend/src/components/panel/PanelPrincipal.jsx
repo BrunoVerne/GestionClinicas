@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import useDatosClinica from '../hooks/useDatosClinica';
+import useDatosClinica from '../../hooks/useDatosClinica';
 
-import BarraPrincipal from './panel/BarraPrincipal';
-import ContenidoPanel from './panel/ContenidoPanel';
-import RenderizadorVista from './panel/RenderizadorVista';
+import BarraPrincipal from './BarraPrincipal';
+import ContenidoPanel from './ContenidoPrincipal';
+import RenderizadorVista from './RenderizadorVista';
 
-import '../styles/panelPrincipal.css';
+import '../../styles/panel/panelPrincipal.css';
 
 export default function PanelPrincipal({
   usuario,
@@ -14,20 +14,20 @@ export default function PanelPrincipal({
 }) {
   const [vista, setVista] = useState('pacientes');
   const [dniSeleccionado, setDniSeleccionado] = useState(null);
-  const [pacienteActivo, setPacienteActivo] = useState(null);
   const [mostrandoFormularioPaciente,setMostrandoFormularioPaciente,] = useState(false);
+  const [mostrandoFormularioMedico, setMostrandoFormularioMedico] = useState(false);
 
   const {
     pacientes,
     setPacientes,
     medicos,
+    setMedicos,
     cargandoDatos,
     errorDatos,
   } = useDatosClinica();
 
   const limpiarSeleccion = () => {
     setDniSeleccionado(null);
-    setPacienteActivo(null);
   };
 
   const mostrarPacientes = () => {
@@ -41,16 +41,11 @@ export default function PanelPrincipal({
   };
 
   const mostrarHistoriaClinica = (dni) => {
-    setPacienteActivo(null);
     setDniSeleccionado(dni);
     setVista('historia');
   };
 
-  const mostrarCondicionFisica = (paciente) => {
-    setDniSeleccionado(null);
-    setPacienteActivo(paciente);
-    setVista('condicion');
-  };
+  
 
   const agregarPaciente = (pacienteCreado) => {
     setPacientes((pacientesActuales) =>
@@ -63,23 +58,21 @@ export default function PanelPrincipal({
     setMostrandoFormularioPaciente(false);
   };
 
-  const manejarPacienteActualizado = (pacienteActualizado) => {
-    setPacienteActivo((pacienteActual) => ({
-      ...pacienteActual,
-      ...pacienteActualizado,
-    }));
+  function agregarMedico(medicoCreado) {
+    setMedicos((medicosActuales) => [
+      ...medicosActuales,
+      medicoCreado,
+    ]);
 
-    setPacientes((pacientesActuales) =>
-      pacientesActuales.map((paciente) =>
-        paciente.dni === pacienteActualizado.dni
-          ? {
-              ...paciente,
-              ...pacienteActualizado,
-            }
-          : paciente,
-      ),
-    );
-  };
+    setMostrandoFormularioMedico(false);
+  }
+
+  function volverAPacientes() {
+    setDniSeleccionado(null);
+    setVista('pacientes');
+  }
+
+  
 
   return (
     <div className="panel-principal">
@@ -100,7 +93,6 @@ export default function PanelPrincipal({
           pacientes={pacientes}
           medicos={medicos}
           dniSeleccionado={dniSeleccionado}
-          pacienteActivo={pacienteActivo}
           mostrandoFormularioPaciente={
             mostrandoFormularioPaciente
           }
@@ -111,10 +103,18 @@ export default function PanelPrincipal({
             setMostrandoFormularioPaciente(false)
           }
           onPacienteCreado={agregarPaciente}
-          onMostrarPacientes={mostrarPacientes}
+
+           mostrandoFormularioMedico={mostrandoFormularioMedico
+          }
+          onMostrarFormularioMedico={() =>setMostrandoFormularioMedico(true)
+          }
+          onCancelarFormularioMedico={() => setMostrandoFormularioMedico(false)
+          }
+          onMedicoCreado={agregarMedico}
+
           onMostrarHistoriaClinica={mostrarHistoriaClinica}
-          onMostrarCondicionFisica={mostrarCondicionFisica}
-          onPacienteActualizado={manejarPacienteActualizado}
+
+          onVolverAPacientes={volverAPacientes}
         />
       </ContenidoPanel>
     </div>

@@ -2,9 +2,9 @@ import { useState } from 'react';
 
 import {
   eliminarAntecedente,
-} from '../../services/antecedenteService';
+} from '../../../services/antecedenteService';
 
-import '../../styles/itemAntecedente.css';
+import '../../../styles/items/itemAntecedente.css';
 
 export default function ItemAntecedente({
   antecedente,

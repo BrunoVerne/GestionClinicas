@@ -1,21 +1,30 @@
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
+async function procesarRespuesta(
+  respuesta,
+  mensajePredeterminado,
+) {
+  const tipoContenido =
+    respuesta.headers.get('content-type') || '';
 
-export async function crearPaciente(datosPaciente) {
-  const respuesta = await fetch(`${API_URL}/pacientes`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(datosPaciente),
-  });
+  let contenido = null;
 
-  const contenido = await respuesta.json().catch(() => null);
+  if (tipoContenido.includes('application/json')) {
+    contenido = await respuesta.json();
+  } else {
+    const texto = await respuesta.text();
+
+    console.error('Respuesta no JSON:', {
+      url: respuesta.url,
+      status: respuesta.status,
+      tipoContenido,
+      texto,
+    });
+  }
 
   if (!respuesta.ok) {
     const error = new Error(
-      contenido?.error || 'No se pudo crear el paciente',
+      contenido?.error || mensajePredeterminado,
     );
 
     error.errores = contenido?.errores || {};
@@ -26,63 +35,113 @@ export async function crearPaciente(datosPaciente) {
   return contenido;
 }
 
-export async function obtenerPacientes() {
-  const url = `${API_URL}/pacientes`;
-
-  console.log('GET pacientes:', url);
-
-  const response = await fetch(url, {
-    credentials: 'include',
-  });
-
-  const contentType = response.headers.get('content-type');
-
-  if (!contentType?.includes('application/json')) {
-    const texto = await response.text();
-
-    console.error('Respuesta no JSON de pacientes:', {
-      url,
-      status: response.status,
-      contentType,
-      texto,
-    });
-
-    throw new Error(`Pacientes devolvió contenido no JSON: ${response.status}`);
-  }
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.error || 'No se pudieron obtener los pacientes');
-  }
-
-  return data;
-}
-
-
-export async function actualizarPaciente(dni, datos) {
-  const respuesta = await fetch(`${API_URL}/pacientes/${dni}`, {
-    method: 'PATCH',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
+export async function crearPaciente(datosPaciente) {
+  const respuesta = await fetch(
+    `${API_URL}/pacientes`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(datosPaciente),
     },
-    body: JSON.stringify(datos)
-  });
+  );
 
-  const contenido = await respuesta.json().catch(() => null);
-
-  if (!respuesta.ok) {
-    const mensaje =
-      contenido?.error ??
-      'No se pudieron actualizar los datos del paciente';
-
-    const error = new Error(mensaje);
-    error.errores = contenido?.errores ?? {};
-    throw error;
-  }
-
-  return contenido;
+  return procesarRespuesta(
+    respuesta,
+    'No se pudo crear el paciente',
+  );
 }
 
+export async function obtenerPacientes() {
+  const respuesta = await fetch(
+    `${API_URL}/pacientes`,
+    {
+      credentials: 'include',
+    },
+  );
+
+  return procesarRespuesta(
+    respuesta,
+    'No se pudieron obtener los pacientes',
+  );
+}
+
+export async function obtenerPacientePorDni(dni) {
+  const respuesta = await fetch(
+    `${API_URL}/pacientes/${dni}`,
+    {
+      credentials: 'include',
+    },
+  );
+
+  return procesarRespuesta(
+    respuesta,
+    'No se pudo obtener el paciente',
+  );
+}
+
+export async function actualizarPaciente(
+  dni,
+  datosPaciente,
+) {
+  const respuesta = await fetch(
+    `${API_URL}/pacientes/${dni}`,
+    {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(datosPaciente),
+    },
+  );
+
+  return procesarRespuesta(
+    respuesta,
+    'No se pudieron actualizar los datos del paciente',
+  );
+}
+
+export async function obtenerGeneros() {
+  const respuesta = await fetch(
+    `${API_URL}/catalogos/generos`,
+    {
+      credentials: 'include',
+    },
+  );
+
+  return procesarRespuesta(
+    respuesta,
+    'No se pudieron obtener los géneros',
+  );
+}
+
+export async function obtenerObrasSociales() {
+  const respuesta = await fetch(
+    `${API_URL}/catalogos/obras-sociales`,
+    {
+      credentials: 'include',
+    },
+  );
+
+  return procesarRespuesta(
+    respuesta,
+    'No se pudieron obtener las obras sociales',
+  );
+}
+
+export async function obtenerCatalogosPaciente() {
+  const [generos, obrasSociales] =
+    await Promise.all([
+      obtenerGeneros(),
+      obtenerObrasSociales(),
+    ]);
+
+  return {
+    generos,
+    obrasSociales,
+  };
+}
 

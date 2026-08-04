@@ -13,7 +13,9 @@ router.get('/', async (req, res) => {
   try {
     const pacientes = await prisma.paciente.findMany({
       include: {
-        historiaClinica: true
+        historiaClinica: true,
+        obraSocial: true
+
       },
       orderBy: {
         nombre: 'asc'
@@ -32,40 +34,61 @@ router.get('/', async (req, res) => {
 
 // POST CREAR PACIENTE
 router.post('/', async (req, res) => {
-  const validacion = validarDatosPaciente(req.body);
+  const validacion =
+    validarDatosPaciente(req.body);
 
   if (!validacion.valido) {
     return res.status(400).json({
       error: 'Datos del paciente inválidos',
-      errores: validacion.errores
+      errores: validacion.errores,
     });
   }
 
   try {
-        const paciente = await prisma.paciente.create({
-      data: {
-        ...validacion.datos,
-        historiaClinica: {
-          create: {},
+    const {
+      obraSocial,
+      ...datosPaciente
+    } = validacion.datos;
+
+    const paciente =
+      await prisma.paciente.create({
+        data: {
+          ...datosPaciente,
+
+          historiaClinica: {
+            create: {},
+          },
+
+          ...(obraSocial && {
+            obraSocial: {
+              create: obraSocial,
+            },
+          }),
         },
-      },
-      include: {
-        historiaClinica: true,
-      },
-    });
+
+        include: {
+          historiaClinica: true,
+          obraSocial: true,
+        },
+      });
 
     return res.status(201).json(paciente);
   } catch (error) {
-    console.error('Error al crear paciente:', error);
+    console.error(
+      'Error al crear paciente:',
+      error,
+    );
 
     if (error.code === 'P2002') {
       return res.status(409).json({
-        error: 'Ya existe un paciente con ese DNI'
+        error:
+          'Ya existe un paciente con ese DNI',
       });
     }
 
     return res.status(500).json({
-      error: 'Error interno del servidor al crear el paciente'
+      error:
+        'Error interno del servidor al crear el paciente',
     });
   }
 });
@@ -86,6 +109,7 @@ router.get('/:dni', async (req, res) => {
         dni: validacionDni.valor
       },
       include: {
+        obraSocial: true,
         historiaClinica: {
           include: {
             consultas: {

@@ -1,4 +1,4 @@
-import '../../styles/itemDocumento.css';
+import '../../../styles/items/itemDocumento.css';
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function DocumentoItem({ documento }) {

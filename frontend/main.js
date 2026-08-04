@@ -1,28 +1,57 @@
-// main.js
-const { app, BrowserWindow } = require('electron')
-const path = require('path')
+const { app, BrowserWindow, Menu } = require('electron');
+const path = require('path');
 
-const isDev = process.env.NODE_ENV === 'development'
+require('dotenv').config({
+  path: path.resolve(__dirname, '../.env'),
+});
+
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 function createWindow() {
+  if (!FRONTEND_URL && !app.isPackaged) {
+    throw new Error(
+      'Falta la variable FRONTEND_URL en el archivo .env',
+    );
+  }
+
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
+    autoHideMenuBar: true,
+
     webPreferences: {
       contextIsolation: true,
-    }
-  })
+    },
+  });
 
-  if (isDev) {
-    win.loadURL('http://localhost:5173')   // servidor de Vite
-    win.webContents.openDevTools()
+  Menu.setApplicationMenu(null);
+  win.setMenuBarVisibility(false);
+
+  if (!app.isPackaged) {
+    win.loadURL(FRONTEND_URL).catch((error) => {
+      console.error(
+        `No se pudo cargar ${FRONTEND_URL}:`,
+        error,
+      );
+    });
+
+    win.webContents.openDevTools();
   } else {
-    win.loadFile(path.join(__dirname, 'dist/index.html'))  // build estático
+    win
+      .loadFile(path.join(__dirname, 'dist/index.html'))
+      .catch((error) => {
+        console.error(
+          'No se pudo cargar el build:',
+          error,
+        );
+      });
   }
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit()
-})
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});

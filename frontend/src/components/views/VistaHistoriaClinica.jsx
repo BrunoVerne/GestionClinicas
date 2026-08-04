@@ -1,4 +1,4 @@
-import HistoriaClinica from './HistoriaClinica';
+import HistoriaClinica from '../cards/HistoriaClinica';
 
 export default function VistaHistoriaClinica({
   dni,

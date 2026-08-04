@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { eliminarConsulta } from '../../services/consultaService';
+import { eliminarConsulta } from '../../../services/consultaService';
 
-import '../../styles/itemConsulta.css';
+import '../../../styles/items/itemConsulta.css';
 
 export default function ItemConsulta({
   consulta,

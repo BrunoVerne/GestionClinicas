@@ -1,0 +1,239 @@
+.barra-principal {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  min-height: 72px;
+  padding: 12px 28px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+}
+
+.barra-principal__marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 0;
+
+  color: #172033;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+
+.barra-principal__marca-icono {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+
+  color: #ffffff;
+  font-size: 1.25rem;
+
+  background: #0080e9;
+  border-radius: 12px;
+  box-shadow: 0 5px 14px rgba(25, 135, 84, 0.22);
+}
+
+.barra-principal__marca-texto {
+  font-size: 1.05rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.barra-principal__acciones {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.barra-principal__usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding-right: 16px;
+  border-right: 1px solid #e2e8f0;
+}
+
+.barra-principal__avatar {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+
+  color: #198754;
+  font-size: 1rem;
+
+  background: #eaf7f0;
+  border: 1px solid #cce9da;
+  border-radius: 50%;
+}
+
+.barra-principal__usuario-informacion {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.barra-principal__usuario-nombre {
+  overflow: hidden;
+
+  max-width: 150px;
+
+  color: #fcfdff;
+  font-size: 0.97rem;
+  font-weight: 650;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barra-principal__usuario-rol {
+  color: #b2c2da;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.barra-principal__navegacion {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.barra-principal__boton,
+.barra-principal__salir {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 42px;
+  padding: 9px 14px;
+
+  font-size: 0.88rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  border-radius: 10px;
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.barra-principal__boton {
+  color: #e2e0e0;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.barra-principal__boton:hover {
+  color: #002ec7;
+  background: #f0f9f4;
+}
+
+.barra-principal__boton--activo {
+  color: #0d007e;
+  background: #eaf7f0;
+  border-color: #cce9da;
+}
+
+.barra-principal__salir {
+  color: #b42318;
+  background: #fff7f6;
+  border: 1px solid #f6d2ce;
+}
+
+.barra-principal__salir:hover {
+  color: #912018;
+  background: #feeceb;
+  border-color: #efb8b3;
+  transform: translateY(-1px);
+}
+
+.barra-principal button:focus-visible {
+  outline: 3px solid rgba(25, 135, 84, 0.2);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .barra-principal {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 18px;
+  }
+
+  .barra-principal__acciones {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .barra-principal__usuario {
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 650px) {
+  .barra-principal__acciones {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+  }
+
+  .barra-principal__usuario {
+    padding-right: 0;
+    border-right: 0;
+  }
+
+  .barra-principal__navegacion {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    width: 100%;
+  }
+
+  .barra-principal__salir {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .barra-principal__boton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 430px) {
+  .barra-principal__marca-texto {
+    font-size: 0.98rem;
+  }
+
+  .barra-principal__usuario-informacion {
+    display: none;
+  }
+
+  .barra-principal__salir span {
+    display: none;
+  }
+
+  .barra-principal__salir {
+    width: 42px;
+    padding: 0;
+  }
+}

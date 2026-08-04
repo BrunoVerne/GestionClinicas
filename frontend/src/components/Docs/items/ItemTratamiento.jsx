@@ -3,9 +3,9 @@ import { useState } from 'react';
 import {
   actualizarFechaFinTratamiento,
   eliminarTratamiento,
-} from '../../services/tratamientoService';
+} from '../../../services/tratamientoService';
 
-import '../../styles/itemTratamiento.css';
+import '../../../styles/items/itemTratamiento.css';
 
 export default function ItemTratamiento({
   tratamiento,

@@ -1,3 +1,5 @@
 {
-    "prisma.pinToPrisma6": true
+    "prisma.pinToPrisma6": true,
+    "js/ts.updateImportsOnFileMove.enabled": "always"
+
 }

@@ -1,13 +1,13 @@
 // HistoriaClinica.jsx
 import { useState, useEffect } from 'react';
-import { getHistoriaByDni } from '../services/historiaService';
-import ItemConsulta from './Docs/ItemConsulta'
-import ItemTratamiento from './Docs/ItemTratamiento'
-import ItemAntecedente from './Docs/ItemAntecedente'
-import ItemDocumento from './Docs/ItemDocumentoGenerico'
-import FormularioConsulta from './Docs/FormularioConsulta';
-import FormularioTratamiento from './Docs/FormularioTratamiento';
-import FormularioAntecedente from './Docs/FormularioAntecedente';
+import { getHistoriaByDni } from '../../services/historiaService';
+import ItemConsulta from '../Docs/items/ItemConsulta'
+import ItemTratamiento from '../Docs/items/ItemTratamiento'
+import ItemAntecedente from '../Docs/items/ItemAntecedente'
+import ItemDocumento from '../Docs/items/ItemDocumentoGenerico'
+import FormularioConsulta from '../Docs/forms/FormularioConsulta';
+import FormularioTratamiento from '../Docs/forms/FormularioTratamiento';
+import FormularioAntecedente from '../Docs/forms/FormularioAntecedente';
 
 export default function HistoriaClinica({ dni, medicos }) {
   const [historia, setHistoria] = useState(null);

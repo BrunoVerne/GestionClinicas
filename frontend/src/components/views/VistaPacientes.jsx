@@ -1,5 +1,5 @@
-import CartaDePaciente from './CartaDePaciente';
-import FormularioPaciente from './Docs/FormularioPaciente';
+import CartaDePaciente from '../cards/CartaDePaciente';
+import FormularioPaciente from '../Docs/forms/FormularioPaciente';
 
 export default function VistaPacientes({
   pacientes,
@@ -8,7 +8,6 @@ export default function VistaPacientes({
   onCancelarFormularioPaciente,
   onPacienteCreado,
   onVerHistoria,
-  onVerCondicionFisica,
 }) {
   return (
     <section>
@@ -21,8 +20,7 @@ export default function VistaPacientes({
           <h1>Pacientes registrados</h1>
 
           <p>
-            Consultá la información general, historia clínica y
-            condición física de cada paciente.
+            Consultá la información general, y la historia clínica de cada paciente.
           </p>
         </div>
 
@@ -65,9 +63,6 @@ export default function VistaPacientes({
               <CartaDePaciente
                 paciente={paciente}
                 onVerHistoria={onVerHistoria}
-                onVerCondicionFisica={
-                  onVerCondicionFisica
-                }
               />
             </div>
           ))}

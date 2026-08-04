@@ -1,28 +1,22 @@
 const {
-  NombreObraSocial,
   Genero,
+  Especialidad,
+  RolUsuario,
 } = require('@prisma/client');
 
-function validarDni(valor) {
-  const dni = Number(valor);
+function validarLegajo(valor) {
+  const legajo = Number(valor);
 
-  if (!Number.isInteger(dni)) {
+  if (!Number.isInteger(legajo) || legajo <= 0) {
     return {
       valido: false,
-      error: 'El DNI debe ser un número entero',
-    };
-  }
-
-  if (dni < 1_000_000 || dni > 99_999_999) {
-    return {
-      valido: false,
-      error: 'El DNI debe tener entre 7 y 8 dígitos',
+      error: 'El legajo debe ser un número entero positivo',
     };
   }
 
   return {
     valido: true,
-    valor: dni,
+    valor: legajo,
   };
 }
 
@@ -67,7 +61,11 @@ function validarNombre(valor) {
 }
 
 function validarTelefono(valor) {
-  if (valor === null || valor === undefined || valor === '') {
+  if (
+    valor === null ||
+    valor === undefined ||
+    valor === ''
+  ) {
     return {
       valido: true,
       valor: null,
@@ -86,7 +84,8 @@ function validarTelefono(valor) {
   if (telefono.length < 6 || telefono.length > 30) {
     return {
       valido: false,
-      error: 'El teléfono debe tener entre 6 y 30 caracteres',
+      error:
+        'El teléfono debe tener entre 6 y 30 caracteres',
     };
   }
 
@@ -104,7 +103,11 @@ function validarTelefono(valor) {
 }
 
 function validarEmail(valor) {
-  if (valor === null || valor === undefined || valor === '') {
+  if (
+    valor === null ||
+    valor === undefined ||
+    valor === ''
+  ) {
     return {
       valido: true,
       valor: null,
@@ -120,6 +123,13 @@ function validarEmail(valor) {
 
   const email = valor.trim().toLowerCase();
 
+  if (email.length > 150) {
+    return {
+      valido: false,
+      error: 'El email no puede superar los 150 caracteres',
+    };
+  }
+
   const formatoValido =
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -130,13 +140,6 @@ function validarEmail(valor) {
     };
   }
 
-  if (email.length > 150) {
-    return {
-      valido: false,
-      error: 'El email no puede superar los 150 caracteres',
-    };
-  }
-
   return {
     valido: true,
     valor: email,
@@ -144,7 +147,11 @@ function validarEmail(valor) {
 }
 
 function validarFechaDeNacimiento(valor) {
-  if (valor === null || valor === undefined || valor === '') {
+  if (
+    valor === null ||
+    valor === undefined ||
+    valor === ''
+  ) {
     return {
       valido: true,
       valor: null,
@@ -160,12 +167,11 @@ function validarFechaDeNacimiento(valor) {
     };
   }
 
-  const ahora = new Date();
-
-  if (fecha > ahora) {
+  if (fecha > new Date()) {
     return {
       valido: false,
-      error: 'La fecha de nacimiento no puede ser futura',
+      error:
+        'La fecha de nacimiento no puede ser futura',
     };
   }
 
@@ -176,14 +182,16 @@ function validarFechaDeNacimiento(valor) {
 }
 
 function validarGenero(valor) {
-  if (valor === null || valor === undefined || valor === '') {
+  if (
+    valor === null ||
+    valor === undefined ||
+    valor === ''
+  ) {
     return {
       valido: true,
       valor: null,
     };
   }
-
-  
 
   if (!Object.values(Genero).includes(valor)) {
     return {
@@ -199,7 +207,11 @@ function validarGenero(valor) {
 }
 
 function validarDomicilio(valor) {
-  if (valor === null || valor === undefined || valor === '') {
+  if (
+    valor === null ||
+    valor === undefined ||
+    valor === ''
+  ) {
     return {
       valido: true,
       valor: null,
@@ -218,14 +230,16 @@ function validarDomicilio(valor) {
   if (domicilio.length < 3) {
     return {
       valido: false,
-      error: 'El domicilio debe tener al menos 3 caracteres',
+      error:
+        'El domicilio debe tener al menos 3 caracteres',
     };
   }
 
   if (domicilio.length > 200) {
     return {
       valido: false,
-      error: 'El domicilio no puede superar los 200 caracteres',
+      error:
+        'El domicilio no puede superar los 200 caracteres',
     };
   }
 
@@ -235,122 +249,147 @@ function validarDomicilio(valor) {
   };
 }
 
-function validarObraSocial(valor) {
-  if (valor === null || valor === undefined) {
-    return {
-      valido: true,
-      valor: null,
-    };
-  }
-
-  if (
-    typeof valor !== 'object' ||
-    Array.isArray(valor)
-  ) {
+function validarMatricula(valor) {
+  if (typeof valor !== 'string') {
     return {
       valido: false,
-      error: 'La obra social debe ser un objeto',
+      error: 'La matrícula debe ser texto',
     };
   }
 
+  const matricula = valor.trim().toUpperCase();
 
- if ( !Object.values(NombreObraSocial).includes(valor.nombre)) {
-    return {
-      valido: false,
-      error: 'La obra social seleccionada no es válida',
-    };
-  }
-
-  const numeroDeAfiliado =
-    valor.numeroDeAfiliado === null ||
-    valor.numeroDeAfiliado === undefined ||
-    valor.numeroDeAfiliado === ''
-      ? null
-      : String(valor.numeroDeAfiliado).trim();
-
-  const plan =
-    valor.plan === null ||
-    valor.plan === undefined ||
-    valor.plan === ''
-      ? null
-      : String(valor.plan).trim();
-
-  if (
-    valor.nombre !== 'SIN_COBERTURA' &&
-    !numeroDeAfiliado
-  ) {
+  if (matricula.length < 3) {
     return {
       valido: false,
       error:
-        'El número de afiliado es obligatorio cuando tiene cobertura',
+        'La matrícula debe tener al menos 3 caracteres',
     };
   }
 
-  if (
-    numeroDeAfiliado &&
-    numeroDeAfiliado.length > 100
-  ) {
+  if (matricula.length > 50) {
     return {
       valido: false,
       error:
-        'El número de afiliado no puede superar los 100 caracteres',
+        'La matrícula no puede superar los 50 caracteres',
     };
   }
 
-  if (plan && plan.length > 100) {
+  if (!/^[A-Z0-9./\-\s]+$/.test(matricula)) {
     return {
       valido: false,
-      error: 'El plan no puede superar los 100 caracteres',
+      error: 'La matrícula contiene caracteres inválidos',
     };
   }
 
   return {
     valido: true,
-    valor: {
-      nombre: valor.nombre,
-      numeroDeAfiliado,
-      plan,
-    },
+    valor: matricula,
   };
 }
 
-function validarDatosPaciente(
+function validarActivo(valor) {
+  if (typeof valor !== 'boolean') {
+    return {
+      valido: false,
+      error: 'El estado activo debe ser verdadero o falso',
+    };
+  }
+
+  return {
+    valido: true,
+    valor,
+  };
+}
+
+function validarRol(valor) {
+  if (
+    valor === null ||
+    valor === undefined ||
+    valor === ''
+  ) {
+    return {
+      valido: true,
+      valor: RolUsuario.MEDICO,
+    };
+  }
+
+  if (valor !== RolUsuario.MEDICO) {
+    return {
+      valido: false,
+      error: 'El rol de un médico debe ser MEDICO',
+    };
+  }
+
+  return {
+    valido: true,
+    valor: RolUsuario.MEDICO,
+  };
+}
+
+function validarEspecialidades(valor) {
+  if (!Array.isArray(valor)) {
+    return {
+      valido: false,
+      error: 'Las especialidades deben enviarse como una lista',
+    };
+  }
+
+  if (valor.length === 0) {
+    return {
+      valido: false,
+      error: 'Debe seleccionar al menos una especialidad',
+    };
+  }
+
+  const especialidadesUnicas = [...new Set(valor)];
+
+  if (especialidadesUnicas.length !== valor.length) {
+    return {
+      valido: false,
+      error: 'No se pueden repetir especialidades',
+    };
+  }
+
+  const especialidadesInvalidas =
+    especialidadesUnicas.filter(
+      (especialidad) =>
+        !Object.values(Especialidad).includes(
+          especialidad,
+        ),
+    );
+
+  if (especialidadesInvalidas.length > 0) {
+    return {
+      valido: false,
+      error: `Especialidades inválidas: ${especialidadesInvalidas.join(', ')}`,
+    };
+  }
+
+  return {
+    valido: true,
+    valor: especialidadesUnicas,
+  };
+}
+
+function validarDatosMedico(
   datos,
   { parcial = false } = {},
 ) {
-  const camposPermitidos = [
-    'dni',
-    'nombre',
-    'telefono',
-    'telefonoDeEmergencia',
-    'email',
-    'fechaDeNacimiento',
-    'genero',
-    'domicilio',
-    'obraSocial',
-  ];
-
-  const camposObligatorios = [
-    'dni',
-    'nombre',
-  ];
-
-  const camposRecibidos = Object.keys(datos);
-
-  const camposDesconocidos = camposRecibidos.filter(
-    (campo) => !camposPermitidos.includes(campo),
-  );
-
-  if (camposDesconocidos.length > 0) {
+  if (
+    !datos ||
+    typeof datos !== 'object' ||
+    Array.isArray(datos)
+  ) {
     return {
       valido: false,
       errores: {
-        general: `Campos no permitidos: ${camposDesconocidos.join(', ')}`,
+        general: 'Los datos del médico no son válidos',
       },
     };
   }
 
-  if (parcial && camposRecibidos.length === 0) {
+  if (parcial && Object.keys(datos).length === 0) {
     return {
       valido: false,
       errores: {
@@ -361,44 +400,34 @@ function validarDatosPaciente(
   }
 
   const validadores = {
-    dni: validarDni,
     nombre: validarNombre,
+    activo: validarActivo,
     telefono: validarTelefono,
     telefonoDeEmergencia: validarTelefono,
     email: validarEmail,
     fechaDeNacimiento: validarFechaDeNacimiento,
     genero: validarGenero,
     domicilio: validarDomicilio,
-    obraSocial: validarObraSocial,
+    matricula: validarMatricula,
+    especialidades: validarEspecialidades,
   };
 
   const datosValidados = {};
   const errores = {};
 
-  for (const campo of camposPermitidos) {
-    const fueEnviado =
-      Object.prototype.hasOwnProperty.call(
-        datos,
-        campo,
-      );
+  for (const [campo, valor] of Object.entries(datos)) {
+    const validador = validadores[campo];
 
-    if (
-      !parcial &&
-      camposObligatorios.includes(campo) &&
-      !fueEnviado
-    ) {
-      errores[campo] =
-        `El campo ${campo} es obligatorio`;
-
+    /*
+     * No rechazamos acá los campos desconocidos.
+     * Prisma hará la validación estructural definitiva.
+     */
+    if (!validador) {
+      datosValidados[campo] = valor;
       continue;
     }
 
-    if (!fueEnviado) {
-      continue;
-    }
-
-    const resultado =
-      validadores[campo](datos[campo]);
+    const resultado = validador(valor);
 
     if (!resultado.valido) {
       errores[campo] = resultado.error;
@@ -420,15 +449,17 @@ function validarDatosPaciente(
     datos: datosValidados,
   };
 }
-
 module.exports = {
-  validarDni,
+  validarLegajo,
   validarNombre,
   validarTelefono,
   validarEmail,
   validarFechaDeNacimiento,
   validarGenero,
   validarDomicilio,
-  validarObraSocial,
-  validarDatosPaciente,
+  validarMatricula,
+  validarActivo,
+  validarRol,
+  validarEspecialidades,
+  validarDatosMedico,
 };

@@ -38,6 +38,7 @@ app.use('/tratamientos', require('./routes/tratamientos'));
 app.use('/antecedentes', require('./routes/antecedentes'));
 app.use('/documentos', require('./routes/documentos'));
 app.use('/auth', require('./routes/auth'));
+app.use('/catalogos',require('./routes/catalogos'));
 
 app.listen(PORT, () => {
   console.log(

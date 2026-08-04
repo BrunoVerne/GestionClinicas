@@ -1,24 +1,26 @@
-import VistaPacientes from '../VistaPacientes';
-import VistaMedicos from '../VistaMedicos';
-import HistoriaClinica from '../HistoriaClinica';
-import CondicionFisicaPaciente from '../CondicionFisicaPaciente';
+import VistaPacientes from '../views/VistaPacientes';
+import VistaMedicos from '../views/VistaMedicos';
+import VistaHistoriaClinica from '../views/VistaHistoriaClinica';
 
 export default function RenderizadorVista({
   vista,
   pacientes,
   medicos,
   dniSeleccionado,
-  pacienteActivo,
 
   mostrandoFormularioPaciente,
   onMostrarFormularioPaciente,
   onCancelarFormularioPaciente,
   onPacienteCreado,
 
-  onMostrarPacientes,
+  mostrandoFormularioMedico,
+  onMostrarFormularioMedico,
+  onCancelarFormularioMedico,
+  onMedicoCreado,
+
+  onVolverAPacientes,
+
   onMostrarHistoriaClinica,
-  onMostrarCondicionFisica,
-  onPacienteActualizado,
 }) {
   if (vista === 'pacientes') {
     return (
@@ -34,9 +36,8 @@ export default function RenderizadorVista({
           onCancelarFormularioPaciente
         }
         onPacienteCreado={onPacienteCreado}
-        onVerHistoria={onMostrarHistoriaClinica}
-        onVerCondicionFisica={
-          onMostrarCondicionFisica
+        onVerHistoria={
+          onMostrarHistoriaClinica
         }
       />
     );
@@ -46,29 +47,27 @@ export default function RenderizadorVista({
     return (
       <VistaMedicos
         medicos={medicos}
+        mostrandoFormularioMedico={
+          mostrandoFormularioMedico
+        }
+        onMostrarFormularioMedico={
+          onMostrarFormularioMedico
+        }
+        onCancelarFormularioMedico={
+          onCancelarFormularioMedico
+        }
+        onMedicoCreado={onMedicoCreado}
       />
     );
   }
 
   if (vista === 'historia') {
     return (
-      <HistoriaClinica
-        dni={dniSeleccionado}
-        medicos={medicos}
-        onVolver={onMostrarPacientes}
-      />
-    );
-  }
-
-  if (vista === 'condicion') {
-    return (
-      <CondicionFisicaPaciente
-        paciente={pacienteActivo}
-        onPacienteActualizado={
-          onPacienteActualizado
-        }
-        onVolver={onMostrarPacientes}
-      />
+      <VistaHistoriaClinica
+      dni={dniSeleccionado}
+      medicos={medicos}
+      onVolver={onVolverAPacientes}
+    />
     );
   }
 

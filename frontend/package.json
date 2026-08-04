@@ -3,25 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
-
-
-  "scripts": 
-  {
+  "scripts": {
     "dev:vite": "vite",
     "dev:electron": "NODE_ENV=development electron .",
     "dev": "concurrently \"npm run dev:vite\" \"wait-on http://localhost:5173 && npm run dev:electron\"",
     "build": "vite build",
     "start": "npm run build && electron ."
   },
-
-  
-  "dependencies":
-  {
+  "dependencies": {
+    "dotenv": "^17.4.2",
     "electron": "^30.5.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",

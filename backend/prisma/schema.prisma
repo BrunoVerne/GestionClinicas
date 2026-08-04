@@ -13,6 +13,70 @@ enum RolUsuario {
   RECEPCIONISTA
 }
 
+enum Genero {
+  FEMENINO
+  MASCULINO
+  NO_BINARIO
+  NO_ESPECIFICA
+  OTRO
+}
+
+enum Especialidad {
+  CARDIOLOGIA
+  CLINICA_MEDICA
+  DERMATOLOGIA
+  GINECOLOGIA
+  NEUROLOGIA
+  OFTALMOLOGIA
+  OTRA
+  PEDIATRIA
+  PSIQUIATRIA
+  TRAUMATOLOGIA
+}
+
+enum NombreObraSocial {
+  ACCORD_SALUD
+  AVALIAN
+  GALENO
+  HOMINIS
+  HOSPITAL_ITALIANO
+  IOMA
+  LUIS_PASTEUR
+  MEDICUS
+  MEDIFE
+  OMINT
+  OSAPM
+  OSBA
+  OSCHOCA
+  OSDE
+  OSDEPYM
+  OSECAC
+  OSFATLYF
+  OSFFENTOS
+  OSPE
+  OSPACA
+  OSPAT
+  OSPEDYC
+  OSPERYH
+  OSPIA
+  OSPIC
+  OSPIL
+  OSPIM
+  OSPJN
+  OSPLAD
+  OSPOCE
+  OSPSA
+  OSSEG
+  OSUTHGRA
+  OTRA
+  PAMI
+  PREVENCION_SALUD
+  SANCOR_SALUD
+  SIN_COBERTURA
+  SWISS_MEDICAL
+  UNION_PERSONAL
+}
+
 model Institucion {
   id        Int     @id @default(autoincrement())
   nombre    String
@@ -31,28 +95,59 @@ model Usuario {
 }
 
 model Medico {
-  legajo       Int     @id @default(autoincrement())
-  nombre       String
-  activo       Boolean @default(true)
-  especialidad String
+  legajo               Int        @id @default(autoincrement())
+  nombre               String
+  activo               Boolean    @default(true)
+  telefono             String?
+  telefonoDeEmergencia String?
+  email                String?
+  fechaDeNacimiento    DateTime?
+  genero               Genero?
+  domicilio            String?
+  matricula             String     @unique
+  rol                   RolUsuario @default(MEDICO)
 
-  consultas    Consulta[]
-  tratamientos Tratamiento[]
+  especialidades MedicoEspecialidad[]
+  consultas       Consulta[]
+  tratamientos    Tratamiento[]
+}
+
+model MedicoEspecialidad {
+  id           Int          @id @default(autoincrement())
+  especialidad Especialidad
+  legajoMedico Int
+  medico       Medico       @relation(fields: [legajoMedico], references: [legajo], onDelete: Cascade)
+
+  @@unique([legajoMedico, especialidad])
+  @@index([legajoMedico])
 }
 
 model Paciente {
-  dni    Int    @id
-  nombre String
-  peso   Float
-  altura Float
+  dni                  Int       @id
+  nombre               String
+  telefono             String?
+  telefonoDeEmergencia String?
+  email                String?
+  fechaDeNacimiento    DateTime?
+  genero               Genero?
+  domicilio            String?
 
   historiaClinica HistoriaClinica?
+  obraSocial      ObraSocial?
+}
+
+model ObraSocial {
+  id               Int              @id @default(autoincrement())
+  nombre           NombreObraSocial
+  numeroDeAfiliado String?
+  plan             String?
+  dniPaciente      Int              @unique
+  paciente         Paciente         @relation(fields: [dniPaciente], references: [dni], onDelete: Cascade)
 }
 
 model HistoriaClinica {
-  expediente Int @id @default(autoincrement())
-
-  dniPaciente Int   @unique
+  expediente  Int      @id @default(autoincrement())
+  dniPaciente Int      @unique
   paciente    Paciente @relation(fields: [dniPaciente], references: [dni], onDelete: Cascade)
 
   consultas    Consulta[]
@@ -115,8 +210,8 @@ model Documento {
   numeroExpediente Int
   historiaClinica HistoriaClinica @relation(fields: [numeroExpediente], references: [expediente], onDelete: Cascade)
 
-  tipo          String
-  archivo       String
+  tipo           String
+  archivo        String
   nombreOriginal String
   mimeType       String
   tamanio        Int
@@ -124,3 +219,4 @@ model Documento {
 
   @@index([numeroExpediente])
 }
+

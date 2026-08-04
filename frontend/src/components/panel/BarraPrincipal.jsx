@@ -1,3 +1,5 @@
+import '../../styles/panel/barraPrincipal.css';
+
 export default function BarraPrincipal({
   usuario,
   vista,
@@ -8,66 +10,72 @@ export default function BarraPrincipal({
   const pacientesActivo = [
     'pacientes',
     'historia',
-    'condicion',
   ].includes(vista);
 
   return (
     <nav className="barra-principal">
       <button
         type="button"
-        className="marca-clinica"
+        className="barra-principal__marca"
         onClick={onMostrarPacientes}
       >
-        <i className="bi bi-hospital" />
-        <span>Gestión Clínica</span>
+        <span className="barra-principal__marca-icono">
+          <i className="bi bi-hospital" />
+        </span>
+
+        <span className="barra-principal__marca-texto">
+          Gestión Clínica
+        </span>
       </button>
 
-      <div className="barra-acciones">
-        <div className="usuario-panel">
-          <div className="usuario-avatar">
+      <div className="barra-principal__acciones">
+        <div className="barra-principal__usuario">
+          <div className="barra-principal__avatar">
             <i className="bi bi-person-fill" />
           </div>
 
-          <div className="usuario-informacion">
-            <span className="usuario-nombre">
+          <div className="barra-principal__usuario-informacion">
+            <span className="barra-principal__usuario-nombre">
               {usuario.nombreUsuario}
             </span>
 
-            <span className="usuario-rol">
+            <span className="barra-principal__usuario-rol">
               {usuario.rol}
             </span>
           </div>
         </div>
 
-        <button
-          type="button"
-          className={
-            pacientesActivo
-              ? 'boton-navegacion activo'
-              : 'boton-navegacion'
-          }
-          onClick={onMostrarPacientes}
-        >
-          <i className="bi bi-people" />
-          <span>Pacientes</span>
-        </button>
+        <div className="barra-principal__navegacion">
+          <button
+            type="button"
+            className={`barra-principal__boton ${
+              pacientesActivo
+                ? 'barra-principal__boton--activo'
+                : ''
+            }`}
+            onClick={onMostrarPacientes}
+          >
+            <i className="bi bi-people" />
+            <span>Pacientes</span>
+          </button>
+
+          <button
+            type="button"
+            className={`barra-principal__boton ${
+              vista === 'medicos'
+                ? 'barra-principal__boton--activo'
+                : ''
+            }`}
+            onClick={onMostrarMedicos}
+          >
+            <i className="bi bi-person-badge" />
+            <span>Médicos</span>
+          </button>
+        </div>
 
         <button
           type="button"
-          className={
-            vista === 'medicos'
-              ? 'boton-navegacion activo'
-              : 'boton-navegacion'
-          }
-          onClick={onMostrarMedicos}
-        >
-          <i className="bi bi-person-badge" />
-          <span>Médicos</span>
-        </button>
-
-        <button
-          type="button"
-          className="boton-salir"
+          className="barra-principal__salir"
           onClick={onLogout}
         >
           <i className="bi bi-box-arrow-right" />
