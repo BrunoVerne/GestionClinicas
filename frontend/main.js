@@ -35,7 +35,7 @@ function createWindow() {
       );
     });
 
-    win.webContents.openDevTools();
+    win.webContents.openDevTools({mode: 'detach'});
   } else {
     win
       .loadFile(path.join(__dirname, 'dist/index.html'))

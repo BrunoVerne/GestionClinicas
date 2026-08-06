@@ -1,5 +1,8 @@
+import { useMemo, useState } from 'react';
+
 import CartaDePaciente from '../cards/CartaDePaciente';
 import FormularioPaciente from '../Docs/forms/FormularioPaciente';
+import Buscador from '../panel/Buscador';
 
 export default function VistaPacientes({
   pacientes,
@@ -9,6 +12,32 @@ export default function VistaPacientes({
   onPacienteCreado,
   onVerHistoria,
 }) {
+  const [busqueda, setBusqueda] = useState('');
+
+  const pacientesFiltrados = useMemo(() => {
+    const termino = busqueda.trim().toLowerCase();
+
+    if (!termino) {
+      return pacientes;
+    }
+
+    return pacientes.filter((paciente) => {
+      const nombre =
+        paciente.nombre?.toLowerCase() ?? '';
+
+      const dni = String(paciente.dni ?? '');
+
+      const email =
+        paciente.email?.toLowerCase() ?? '';
+
+      return (
+        nombre.includes(termino) ||
+        dni.includes(termino) ||
+        email.includes(termino)
+      );
+    });
+  }, [pacientes, busqueda]);
+
   return (
     <section>
       <header className="encabezado-vista">
@@ -20,7 +49,8 @@ export default function VistaPacientes({
           <h1>Pacientes registrados</h1>
 
           <p>
-            Consultá la información general, y la historia clínica de cada paciente.
+            Consultá la información general y la historia
+            clínica de cada paciente.
           </p>
         </div>
 
@@ -37,10 +67,25 @@ export default function VistaPacientes({
       </header>
 
       {mostrandoFormularioPaciente && (
-        <FormularioPaciente
-          onPacienteCreado={onPacienteCreado}
-          onCancelar={onCancelarFormularioPaciente}
-        />
+        <div className="mb-4">
+          <FormularioPaciente
+            onPacienteCreado={onPacienteCreado}
+            onCancelar={onCancelarFormularioPaciente}
+          />
+        </div>
+      )}
+
+      {pacientes.length > 0 && (
+        <div className="mb-4">
+          <Buscador
+            valor={busqueda}
+            onChange={setBusqueda}
+            placeholder="Buscar por nombre, DNI o email"
+            cantidadResultados={
+              pacientesFiltrados.length
+            }
+          />
+        </div>
       )}
 
       {pacientes.length === 0 ? (
@@ -50,12 +95,23 @@ export default function VistaPacientes({
           <h2>No hay pacientes registrados</h2>
 
           <p>
-            Los pacientes registrados aparecerán en esta sección.
+            Los pacientes registrados aparecerán en esta
+            sección.
+          </p>
+        </div>
+      ) : pacientesFiltrados.length === 0 ? (
+        <div className="estado-vacio">
+          <i className="bi bi-search" />
+
+          <h2>No se encontraron pacientes</h2>
+
+          <p>
+            No hay coincidencias para “{busqueda}”.
           </p>
         </div>
       ) : (
         <div className="row g-4">
-          {pacientes.map((paciente) => (
+          {pacientesFiltrados.map((paciente) => (
             <div
               className="col-12 col-md-6 col-xl-4"
               key={paciente.dni}
@@ -71,4 +127,3 @@ export default function VistaPacientes({
     </section>
   );
 }
-
