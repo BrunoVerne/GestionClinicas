@@ -8,6 +8,7 @@ import ItemDocumento from '../Docs/items/ItemDocumentoGenerico'
 import FormularioConsulta from '../Docs/forms/FormularioConsulta';
 import FormularioTratamiento from '../Docs/forms/FormularioTratamiento';
 import FormularioAntecedente from '../Docs/forms/FormularioAntecedente';
+import FormularioDocumento from '../Docs/forms/FormularioDocumento';
 
 export default function HistoriaClinica({ dni, medicos }) {
   const [historia, setHistoria] = useState(null);
@@ -16,6 +17,7 @@ export default function HistoriaClinica({ dni, medicos }) {
   const [mostrandoFormularioConsulta, setMostrandoFormularioConsulta] = useState(false);
   const [mostrandoFormularioTratamiento,setMostrandoFormularioTratamiento,] = useState(false);
   const [mostrandoFormularioAntecedente,setMostrandoFormularioAntecedente,] = useState(false);
+  const [mostrandoFormularioDocumento,setMostrandoFormularioDocumento] = useState(false);
 
   const agregarTratamiento = (tratamientoCreado) => {
     setHistoria((historiaActual) => ({
@@ -39,6 +41,19 @@ export default function HistoriaClinica({ dni, medicos }) {
     }));
 
     setMostrandoFormularioAntecedente(false);
+  };
+
+  const agregarDocumento = (documentoCreado) => {
+    setHistoria((historiaActual) => ({
+      ...historiaActual,
+
+      documentos: [
+        documentoCreado,
+        ...(historiaActual.documentos || []),
+      ],
+    }));
+
+    setMostrandoFormularioDocumento(false);
   };
 
   useEffect(() => {
@@ -343,32 +358,62 @@ export default function HistoriaClinica({ dni, medicos }) {
           )}
         </div>
 
-        <div className="tab-pane fade" id="documentos" role="tabpanel">
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <div>
-              <h5 className="mb-1">
-                Documentos
-              </h5>
+        <div
+  className="tab-pane fade"
+  id="documentos"
+  role="tabpanel"
+>
+    
+  <div className="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <h5 className="mb-1">
+              Documentos
+            </h5>
 
-              <small className="text-muted">
-                Documentación clínica del paciente
-              </small>
-            </div>
+            <small className="text-muted">
+              Documentación clínica del paciente
+            </small>
           </div>
 
-          {historia.documentos?.length > 0 ? (
-            historia.documentos.map((documento) => (
-              <ItemDocumento
-                key={documento.numeroDocumento}
-                documento={documento}
-              />
-            ))
-          ) : (
-            <p className="text-muted">
-              Sin documentos registrados.
-            </p>
+          {!mostrandoFormularioDocumento && (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() =>
+                setMostrandoFormularioDocumento(true)
+              }
+            >
+              <i className="bi bi-paperclip me-1" />
+              Agregar documento
+            </button>
           )}
         </div>
+
+        {mostrandoFormularioDocumento && (
+          <div className="mb-4">
+            <FormularioDocumento
+              dniPaciente={historia.dniPaciente}
+              onDocumentoCreado={agregarDocumento}
+              onCancelar={() =>
+                setMostrandoFormularioDocumento(false)
+              }
+            />
+          </div>
+        )}
+
+        {historia.documentos?.length > 0 ? (
+          historia.documentos.map((documento) => (
+            <ItemDocumento
+              key={documento.numeroDocumento}
+              documento={documento}
+            />
+          ))
+        ) : (
+          <p className="text-muted">
+            Sin documentos registrados.
+          </p>
+        )}
+      </div>
     </div>
   </div>
   )
