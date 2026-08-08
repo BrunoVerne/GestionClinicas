@@ -1,0 +1,196 @@
+.vista-turnos {
+  width: 100%;
+}
+
+.vista-turnos__formulario {
+  margin-bottom: 28px;
+}
+
+.vista-turnos__carga {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 280px;
+  color: #64748b;
+}
+
+.vista-turnos__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.turno-card {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.04);
+}
+
+.turno-card__fecha {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 22px;
+  background: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+}
+
+.turno-card__dia {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.turno-card__hora {
+  color: #0f172a;
+  font-size: 1.05rem;
+}
+
+.turno-card__contenido {
+  padding: 20px 22px;
+}
+
+.turno-card__principal {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.turno-card__etiqueta {
+  display: block;
+  margin-bottom: 3px;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.turno-card__paciente {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+.turno-card__estado {
+  flex-shrink: 0;
+  padding: 5px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 999px;
+}
+
+.turno-card__estado--pendiente {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.turno-card__estado--confirmado {
+  color: #1e40af;
+  background: #dbeafe;
+}
+
+.turno-card__estado--atendido {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.turno-card__estado--cancelado {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.turno-card__estado--ausente {
+  color: #475569;
+  background: #e2e8f0;
+}
+
+.turno-card__datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 18px;
+}
+
+.turno-card__dato {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 160px;
+}
+
+.turno-card__dato > i {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+.turno-card__dato div {
+  display: flex;
+  flex-direction: column;
+}
+
+.turno-card__dato span {
+  color: #94a3b8;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.turno-card__dato strong {
+  color: #334155;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.turno-card__observaciones {
+  margin-top: 16px;
+  padding: 10px 12px;
+  color: #475569;
+  font-size: 0.84rem;
+  background: #f8fafc;
+  border-radius: 9px;
+}
+
+.turno-card__acciones {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.turno-card--cancelado {
+  opacity: 0.65;
+}
+
+@media (max-width: 768px) {
+  .turno-card {
+    grid-template-columns: 1fr;
+  }
+
+  .turno-card__fecha {
+    border-right: 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+}
+
+@media (max-width: 576px) {
+  .turno-card__principal {
+    flex-direction: column;
+  }
+
+  .turno-card__datos {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .turno-card__acciones .btn {
+    width: 100%;
+  }
+}

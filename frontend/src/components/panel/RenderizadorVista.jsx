@@ -1,6 +1,7 @@
 import VistaPacientes from '../views/VistaPacientes';
 import VistaMedicos from '../views/VistaMedicos';
 import VistaHistoriaClinica from '../views/VistaHistoriaClinica';
+import VistaTurnos from '../views/VistaTurnos';
 
 export default function RenderizadorVista({
   vista,
@@ -61,13 +62,21 @@ export default function RenderizadorVista({
     );
   }
 
+  if (vista === 'turnos') {
+    return (
+      <VistaTurnos
+        pacientes={pacientes}
+      />
+    );
+  }
+
   if (vista === 'historia') {
     return (
       <VistaHistoriaClinica
-      dni={dniSeleccionado}
-      medicos={medicos}
-      onVolver={onVolverAPacientes}
-    />
+        dni={dniSeleccionado}
+        medicos={medicos}
+        onVolver={onVolverAPacientes}
+      />
     );
   }
 

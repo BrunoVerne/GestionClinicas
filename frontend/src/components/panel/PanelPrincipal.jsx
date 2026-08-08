@@ -12,10 +12,23 @@ export default function PanelPrincipal({
   usuario,
   onLogout,
 }) {
-  const [vista, setVista] = useState('pacientes');
-  const [dniSeleccionado, setDniSeleccionado] = useState(null);
-  const [mostrandoFormularioPaciente,setMostrandoFormularioPaciente,] = useState(false);
-  const [mostrandoFormularioMedico, setMostrandoFormularioMedico] = useState(false);
+  const [vista, setVista] =
+    useState('pacientes');
+
+  const [
+    dniSeleccionado,
+    setDniSeleccionado,
+  ] = useState(null);
+
+  const [
+    mostrandoFormularioPaciente,
+    setMostrandoFormularioPaciente,
+  ] = useState(false);
+
+  const [
+    mostrandoFormularioMedico,
+    setMostrandoFormularioMedico,
+  ] = useState(false);
 
   const {
     pacientes,
@@ -30,29 +43,49 @@ export default function PanelPrincipal({
     setDniSeleccionado(null);
   };
 
+  const cerrarFormularios = () => {
+    setMostrandoFormularioPaciente(false);
+    setMostrandoFormularioMedico(false);
+  };
+
   const mostrarPacientes = () => {
     limpiarSeleccion();
+    cerrarFormularios();
     setVista('pacientes');
   };
 
   const mostrarMedicos = () => {
     limpiarSeleccion();
+    cerrarFormularios();
     setVista('medicos');
   };
 
+  const mostrarTurnos = () => {
+    limpiarSeleccion();
+    cerrarFormularios();
+    setVista('turnos');
+  };
+
   const mostrarHistoriaClinica = (dni) => {
+    cerrarFormularios();
     setDniSeleccionado(dni);
     setVista('historia');
   };
 
-  
-
-  const agregarPaciente = (pacienteCreado) => {
-    setPacientes((pacientesActuales) =>
-      [...pacientesActuales, pacienteCreado].sort(
-        (a, b) =>
-          a.nombre.localeCompare(b.nombre, 'es'),
-      ),
+  const agregarPaciente = (
+    pacienteCreado,
+  ) => {
+    setPacientes(
+      (pacientesActuales) =>
+        [
+          ...pacientesActuales,
+          pacienteCreado,
+        ].sort((a, b) =>
+          a.nombre.localeCompare(
+            b.nombre,
+            'es',
+          ),
+        ),
     );
 
     setMostrandoFormularioPaciente(false);
@@ -72,8 +105,6 @@ export default function PanelPrincipal({
     setVista('pacientes');
   }
 
-  
-
   return (
     <div className="panel-principal">
       <BarraPrincipal
@@ -81,6 +112,7 @@ export default function PanelPrincipal({
         vista={vista}
         onMostrarPacientes={mostrarPacientes}
         onMostrarMedicos={mostrarMedicos}
+        onMostrarTurnos={mostrarTurnos}
         onLogout={onLogout}
       />
 
@@ -92,29 +124,49 @@ export default function PanelPrincipal({
           vista={vista}
           pacientes={pacientes}
           medicos={medicos}
-          dniSeleccionado={dniSeleccionado}
+          dniSeleccionado={
+            dniSeleccionado
+          }
+
           mostrandoFormularioPaciente={
             mostrandoFormularioPaciente
           }
           onMostrarFormularioPaciente={() =>
-            setMostrandoFormularioPaciente(true)
+            setMostrandoFormularioPaciente(
+              true,
+            )
           }
           onCancelarFormularioPaciente={() =>
-            setMostrandoFormularioPaciente(false)
+            setMostrandoFormularioPaciente(
+              false,
+            )
           }
-          onPacienteCreado={agregarPaciente}
+          onPacienteCreado={
+            agregarPaciente
+          }
 
-           mostrandoFormularioMedico={mostrandoFormularioMedico
+          mostrandoFormularioMedico={
+            mostrandoFormularioMedico
           }
-          onMostrarFormularioMedico={() =>setMostrandoFormularioMedico(true)
+          onMostrarFormularioMedico={() =>
+            setMostrandoFormularioMedico(
+              true,
+            )
           }
-          onCancelarFormularioMedico={() => setMostrandoFormularioMedico(false)
+          onCancelarFormularioMedico={() =>
+            setMostrandoFormularioMedico(
+              false,
+            )
           }
           onMedicoCreado={agregarMedico}
 
-          onMostrarHistoriaClinica={mostrarHistoriaClinica}
+          onMostrarHistoriaClinica={
+            mostrarHistoriaClinica
+          }
 
-          onVolverAPacientes={volverAPacientes}
+          onVolverAPacientes={
+            volverAPacientes
+          }
         />
       </ContenidoPanel>
     </div>

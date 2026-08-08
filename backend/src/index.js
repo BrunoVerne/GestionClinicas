@@ -39,7 +39,10 @@ app.use('/antecedentes', require('./routes/antecedentes'));
 app.use('/documentos', require('./routes/documentos'));
 app.use('/auth', require('./routes/auth'));
 app.use('/catalogos',require('./routes/catalogos'));
-
+app.use('/horarios-medicos',require('./routes/horariosMedicos'));
+app.use('/bloqueos-agenda',require('./routes/bloqueosAgenda'));
+app.use('/turnos', require('./routes/turnos'));
+app.use('/agenda',require('./routes/agenda'));
 app.listen(PORT, () => {
   console.log(
     `Servidor corriendo en http://localhost:${PORT}`,

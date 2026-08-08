@@ -5,6 +5,7 @@ export default function BarraPrincipal({
   vista,
   onMostrarPacientes,
   onMostrarMedicos,
+  onMostrarTurnos,
   onLogout,
 }) {
   const pacientesActivo = [
@@ -70,6 +71,19 @@ export default function BarraPrincipal({
           >
             <i className="bi bi-person-badge" />
             <span>Médicos</span>
+          </button>
+
+          <button
+            type="button"
+            className={`barra-principal__boton ${
+              vista === 'turnos'
+                ? 'barra-principal__boton--activo'
+                : ''
+            }`}
+            onClick={onMostrarTurnos}
+          >
+            <i className="bi bi-calendar3" />
+            <span>Turnos</span>
           </button>
         </div>
 
