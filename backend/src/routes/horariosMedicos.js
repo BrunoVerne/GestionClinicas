@@ -440,4 +440,171 @@ router.delete('/:legajo/:id', async (req, res) => {
   }
 });
 
+
+
+// ==========================================
+// PUT reemplazar horarios completos
+// ==========================================
+
+router.put('/:legajo', async (req, res) => {
+  const legajo = validarLegajo(
+    req.params.legajo,
+  );
+
+  if (!legajo) {
+    return res.status(400).json({
+      error: 'El legajo no es válido',
+    });
+  }
+
+  const horarios = req.body.horarios;
+
+  if (!Array.isArray(horarios)) {
+    return res.status(400).json({
+      error:
+        'Los horarios deben enviarse como un arreglo',
+    });
+  }
+
+  const horariosValidados = [];
+
+  for (let i = 0; i < horarios.length; i++) {
+    const validacion =
+      validarDatosHorario(horarios[i]);
+
+    if (!validacion.valido) {
+      return res.status(400).json({
+        error:
+          `Horario ${i + 1} inválido`,
+        errores: validacion.errores,
+      });
+    }
+
+    horariosValidados.push(
+      validacion.datos,
+    );
+  }
+
+  // Validar solapamientos dentro
+  // de los propios horarios enviados
+  for (
+    let i = 0;
+    i < horariosValidados.length;
+    i++
+  ) {
+    for (
+      let j = i + 1;
+      j < horariosValidados.length;
+      j++
+    ) {
+      const primero =
+        horariosValidados[i];
+
+      const segundo =
+        horariosValidados[j];
+
+      if (
+        primero.diaSemana ===
+          segundo.diaSemana &&
+        primero.horaInicio <
+          segundo.horaFin &&
+        primero.horaFin >
+          segundo.horaInicio
+      ) {
+        return res.status(400).json({
+          error:
+            'Los horarios enviados se superponen',
+        });
+      }
+    }
+  }
+
+  try {
+    const medico =
+      await prisma.medico.findUnique({
+        where: {
+          legajo,
+        },
+
+        select: {
+          legajo: true,
+          activo: true,
+        },
+      });
+
+    if (!medico) {
+      return res.status(404).json({
+        error: 'Médico no encontrado',
+      });
+    }
+
+    const horariosActualizados =
+      await prisma.$transaction(
+        async (tx) => {
+          await tx.horarioMedico.deleteMany({
+            where: {
+              legajoMedico: legajo,
+            },
+          });
+
+          if (
+            horariosValidados.length > 0
+          ) {
+            await tx.horarioMedico.createMany({
+              data:
+                horariosValidados.map(
+                  (horario) => ({
+                    diaSemana:
+                      horario.diaSemana,
+
+                    horaInicio:
+                      horario.horaInicio,
+
+                    horaFin:
+                      horario.horaFin,
+
+                    legajoMedico:
+                      legajo,
+
+                    activo: true,
+                  }),
+                ),
+            });
+          }
+
+          return tx.horarioMedico.findMany({
+            where: {
+              legajoMedico: legajo,
+              activo: true,
+            },
+
+            orderBy: [
+              {
+                diaSemana: 'asc',
+              },
+              {
+                horaInicio: 'asc',
+              },
+            ],
+          });
+        },
+      );
+
+    return res.json(
+      horariosActualizados,
+    );
+  } catch (error) {
+    console.error(
+      'Error reemplazando horarios:',
+      error,
+    );
+
+    return res.status(500).json({
+      error:
+        'Error interno al actualizar los horarios del médico',
+    });
+  }
+});
+
+
 module.exports = router;

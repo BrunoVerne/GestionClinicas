@@ -201,19 +201,17 @@ function TurnoCard({
   turno,
   onCancelar,
 }) {
-  const fechaInicio =
-    formatearFecha(turno.fechaInicio);
+  const fechaInicio = formatearFecha(turno.fechaInicio);
 
-  const horaInicio =
-    formatearHora(turno.fechaInicio);
+  const horaInicio = formatearHora(turno.fechaInicio);
 
-  const horaFin =
-    formatearHora(turno.fechaFin);
+  const horaFin = formatearHora(turno.fechaFin);
 
-  const puedeCancelar = ![
-    'CANCELADO',
-    'ATENDIDO',
-  ].includes(turno.estado);
+  const LIMITE_CANCELACION_MS = 60 * 60 * 1000;
+
+const fechaLimiteCancelacion = new Date(new Date(turno.fechaFin).getTime() + LIMITE_CANCELACION_MS);
+
+const puedeCancelar = new Date() < fechaLimiteCancelacion && !['CANCELADO','ATENDIDO'].includes(turno.estado);
 
   return (
     <article

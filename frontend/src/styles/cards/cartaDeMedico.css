@@ -1,7 +1,6 @@
 .carta-medico {
   display: flex;
   flex-direction: column;
-  height: 100%;
   overflow: hidden;
 
   background: #ffffff;
@@ -236,4 +235,13 @@
   .carta-medico__estado {
     padding: 5px 8px;
   }
+}
+
+
+.carta-medico__acciones {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
 }

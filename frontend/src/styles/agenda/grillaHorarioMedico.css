@@ -1,0 +1,188 @@
+.grilla-horario {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
+}
+
+.grilla-horario__encabezado {
+  padding: 24px 26px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.grilla-horario__etiqueta {
+  display: block;
+  margin-bottom: 5px;
+  color: #2563eb;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.grilla-horario__titulo {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.grilla-horario__descripcion {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.grilla-horario > .alert {
+  margin: 20px 24px 0;
+}
+
+.grilla-horario__contenedor {
+  padding: 24px;
+  overflow-x: auto;
+}
+
+.grilla-horario__tabla {
+  display: grid;
+  min-width: 780px;
+  grid-template-columns:
+    82px
+    repeat(7, minmax(82px, 1fr));
+  gap: 4px;
+}
+
+.grilla-horario__esquina,
+.grilla-horario__dia,
+.grilla-horario__hora {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.grilla-horario__esquina {
+  color: #64748b;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.grilla-horario__dia {
+  color: #334155;
+  cursor: pointer;
+  background: #f1f5f9;
+  border: 0;
+  border-radius: 9px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.grilla-horario__dia:hover {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.grilla-horario__hora {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.grilla-horario__bloque {
+  display: grid;
+  min-height: 46px;
+  place-items: center;
+  color: transparent;
+  cursor: pointer;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.grilla-horario__bloque:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+
+.grilla-horario__bloque:active {
+  transform: scale(0.97);
+}
+
+.grilla-horario__bloque--seleccionado {
+  color: #ffffff;
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.grilla-horario__bloque--seleccionado:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.grilla-horario__leyenda {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 26px 22px;
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
+.grilla-horario__leyenda > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.grilla-horario__muestra {
+  width: 17px;
+  height: 17px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+}
+
+.grilla-horario__muestra--disponible {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.grilla-horario__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px 26px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.grilla-horario__cargando {
+  display: flex;
+  min-height: 220px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #64748b;
+}
+
+@media (max-width: 700px) {
+  .grilla-horario__encabezado,
+  .grilla-horario__contenedor,
+  .grilla-horario__acciones {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .grilla-horario__acciones {
+    flex-direction: column-reverse;
+  }
+
+  .grilla-horario__acciones .btn {
+    width: 100%;
+  }
+}
