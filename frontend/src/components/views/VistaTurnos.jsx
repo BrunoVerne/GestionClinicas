@@ -1,5 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
+import TurnoCard from '../cards/TurnoCard';
+import FiltrosTurnos from '../turnos/FiltrosTurnos';
 
 import {
   cancelarTurno,
@@ -12,10 +18,29 @@ export default function VistaTurnos({
   onNuevoTurno,
 }) {
   const [turnos, setTurnos] = useState([]);
- 
 
-  const [cargando, setCargando] = useState(true);
+  const [cargando, setCargando] =
+    useState(true);
+
   const [error, setError] = useState('');
+
+  const [ordenFecha, setOrdenFecha] =
+    useState('asc');
+
+  const [
+    filtroEspecialidad,
+    setFiltroEspecialidad,
+  ] = useState('');
+
+  const [
+    filtroMedico,
+    setFiltroMedico,
+  ] = useState('');
+
+  const [
+    filtroEstado,
+    setFiltroEstado,
+  ] = useState('');
 
   useEffect(() => {
     cargarTurnos();
@@ -44,8 +69,6 @@ export default function VistaTurnos({
     }
   }
 
-  
-
   async function manejarCancelarTurno(
     numeroTurno,
   ) {
@@ -58,6 +81,8 @@ export default function VistaTurnos({
     }
 
     try {
+      setError('');
+
       const turnoCancelado =
         await cancelarTurno(numeroTurno);
 
@@ -84,13 +109,104 @@ export default function VistaTurnos({
     }
   }
 
-  const turnosOrdenados = useMemo(() => {
-    return [...turnos].sort(
+  const especialidades = useMemo(() => {
+    return [
+      ...new Set(
+        turnos
+          .map(
+            (turno) =>
+              turno.especialidad,
+          )
+          .filter(Boolean),
+      ),
+    ].sort();
+  }, [turnos]);
+
+  const medicos = useMemo(() => {
+    const mapaMedicos = new Map();
+
+    turnos.forEach((turno) => {
+      const legajo =
+        turno.medico?.legajo ??
+        turno.legajoMedico;
+
+      if (!legajo) {
+        return;
+      }
+
+      mapaMedicos.set(legajo, {
+        legajo,
+        nombre:
+          turno.medico?.nombre ??
+          `Legajo ${legajo}`,
+      });
+    });
+
+    return [...mapaMedicos.values()].sort(
       (a, b) =>
-        new Date(a.fechaInicio) -
-        new Date(b.fechaInicio),
+        a.nombre.localeCompare(
+          b.nombre,
+          'es',
+        ),
     );
   }, [turnos]);
+
+  const turnosFiltrados = useMemo(() => {
+    let resultado = [...turnos];
+
+    if (filtroEspecialidad) {
+      resultado = resultado.filter(
+        (turno) =>
+          turno.especialidad ===
+          filtroEspecialidad,
+      );
+    }
+
+    if (filtroMedico) {
+      resultado = resultado.filter(
+        (turno) =>
+          String(turno.legajoMedico) ===
+          String(filtroMedico),
+      );
+    }
+
+    if (filtroEstado) {
+      resultado = resultado.filter(
+        (turno) =>
+          turno.estado === filtroEstado,
+      );
+    }
+
+    resultado.sort((a, b) => {
+      const diferencia =
+        new Date(a.fechaInicio) -
+        new Date(b.fechaInicio);
+
+      return ordenFecha === 'asc'
+        ? diferencia
+        : -diferencia;
+    });
+
+    return resultado;
+  }, [
+    turnos,
+    filtroEspecialidad,
+    filtroMedico,
+    filtroEstado,
+    ordenFecha,
+  ]);
+
+  function limpiarFiltros() {
+    setOrdenFecha('asc');
+    setFiltroEspecialidad('');
+    setFiltroMedico('');
+    setFiltroEstado('');
+  }
+
+  const hayFiltrosActivos =
+    filtroEspecialidad !== '' ||
+    filtroMedico !== '' ||
+    filtroEstado !== '';
 
   if (cargando) {
     return (
@@ -144,9 +260,35 @@ export default function VistaTurnos({
         </div>
       )}
 
-      
+      {turnos.length > 0 && (
+        <FiltrosTurnos
+          ordenFecha={ordenFecha}
+          onOrdenFechaChange={
+            setOrdenFecha
+          }
+          especialidad={
+            filtroEspecialidad
+          }
+          onEspecialidadChange={
+            setFiltroEspecialidad
+          }
+          especialidades={
+            especialidades
+          }
+          medico={filtroMedico}
+          onMedicoChange={
+            setFiltroMedico
+          }
+          medicos={medicos}
+          estado={filtroEstado}
+          onEstadoChange={
+            setFiltroEstado
+          }
+          onLimpiar={limpiarFiltros}
+        />
+      )}
 
-      {turnosOrdenados.length === 0 ? (
+      {turnos.length === 0 ? (
         <div className="estado-vacio">
           <i className="bi bi-calendar-x" />
 
@@ -157,192 +299,55 @@ export default function VistaTurnos({
             esta sección.
           </p>
         </div>
-      ) : (
-        <div className="vista-turnos__lista">
-          {turnosOrdenados.map((turno) => (
-            <TurnoCard
-              key={turno.numeroTurno}
-              turno={turno}
-              onCancelar={
-                manejarCancelarTurno
-              }
-            />
-          ))}
+      ) : turnosFiltrados.length === 0 ? (
+        <div className="estado-vacio">
+          <i className="bi bi-funnel" />
+
+          <h2>
+            No hay turnos para estos filtros
+          </h2>
+
+          <p>
+            Modificá los filtros para consultar
+            otros turnos.
+          </p>
+
+          {hayFiltrosActivos && (
+            <button
+              type="button"
+              className="btn btn-outline-secondary mt-2"
+              onClick={limpiarFiltros}
+            >
+              Limpiar filtros
+            </button>
+          )}
         </div>
+      ) : (
+        <>
+          <div className="mb-3 text-muted small">
+            {turnosFiltrados.length}{' '}
+            {turnosFiltrados.length === 1
+              ? 'turno encontrado'
+              : 'turnos encontrados'}
+          </div>
+
+          <div className="vista-turnos__lista">
+            {turnosFiltrados.map(
+              (turno) => (
+                <TurnoCard
+                  key={
+                    turno.numeroTurno
+                  }
+                  turno={turno}
+                  onCancelar={
+                    manejarCancelarTurno
+                  }
+                />
+              ),
+            )}
+          </div>
+        </>
       )}
     </section>
   );
-}
-
-function TurnoCard({
-  turno,
-  onCancelar,
-}) {
-  const fechaInicio = formatearFecha(turno.fechaInicio);
-
-  const horaInicio = formatearHora(turno.fechaInicio);
-
-  const horaFin = formatearHora(turno.fechaFin);
-
-  const LIMITE_CANCELACION_MS = 60 * 60 * 1000;
-
-const fechaLimiteCancelacion = new Date(new Date(turno.fechaFin).getTime() + LIMITE_CANCELACION_MS);
-
-const puedeCancelar = new Date() < fechaLimiteCancelacion && !['CANCELADO','ATENDIDO'].includes(turno.estado);
-
-  return (
-    <article
-      className={`turno-card turno-card--${turno.estado.toLowerCase()}`}
-    >
-      <div className="turno-card__fecha">
-        <span className="turno-card__dia">
-          {fechaInicio}
-        </span>
-
-        <strong className="turno-card__hora">
-          {horaInicio} – {horaFin}
-        </strong>
-      </div>
-
-      <div className="turno-card__contenido">
-        <div className="turno-card__principal">
-          <div>
-            <span className="turno-card__etiqueta">
-              Paciente
-            </span>
-
-            <h2 className="turno-card__paciente">
-              {turno.paciente?.nombre ??
-                `DNI ${turno.dniPaciente}`}
-            </h2>
-          </div>
-
-          <EstadoTurno estado={turno.estado} />
-        </div>
-
-        <div className="turno-card__datos">
-          <DatoTurno
-            icono="bi-person-badge"
-            etiqueta="Médico"
-            valor={
-              turno.medico?.nombre ??
-              `Legajo ${turno.legajoMedico}`
-            }
-          />
-
-          <DatoTurno
-            icono="bi-heart-pulse"
-            etiqueta="Especialidad"
-            valor={formatearEspecialidad(
-              turno.especialidad,
-            )}
-          />
-
-          {turno.motivo && (
-            <DatoTurno
-              icono="bi-chat-left-text"
-              etiqueta="Motivo"
-              valor={turno.motivo}
-            />
-          )}
-        </div>
-
-        {turno.observaciones && (
-          <div className="turno-card__observaciones">
-            {turno.observaciones}
-          </div>
-        )}
-
-        {puedeCancelar && (
-          <div className="turno-card__acciones">
-            <button
-              type="button"
-              className="btn btn-outline-danger btn-sm"
-              onClick={() =>
-                onCancelar(turno.numeroTurno)
-              }
-            >
-              <i className="bi bi-x-circle me-1" />
-              Cancelar turno
-            </button>
-          </div>
-        )}
-      </div>
-    </article>
-  );
-}
-
-function DatoTurno({
-  icono,
-  etiqueta,
-  valor,
-}) {
-  return (
-    <div className="turno-card__dato">
-      <i className={`bi ${icono}`} />
-
-      <div>
-        <span>{etiqueta}</span>
-        <strong>{valor}</strong>
-      </div>
-    </div>
-  );
-}
-
-function EstadoTurno({ estado }) {
-  return (
-    <span
-      className={`turno-card__estado turno-card__estado--${estado.toLowerCase()}`}
-    >
-      {formatearEstado(estado)}
-    </span>
-  );
-}
-
-function formatearFecha(fecha) {
-  return new Intl.DateTimeFormat('es-AR', {
-    timeZone:
-      'America/Argentina/Buenos_Aires',
-    weekday: 'short',
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  }).format(new Date(fecha));
-}
-
-function formatearHora(fecha) {
-  return new Intl.DateTimeFormat('es-AR', {
-    timeZone:
-      'America/Argentina/Buenos_Aires',
-    hour: '2-digit',
-    minute: '2-digit',
-    hourCycle: 'h23',
-  }).format(new Date(fecha));
-}
-
-function formatearEspecialidad(
-  especialidad,
-) {
-  if (!especialidad) {
-    return '-';
-  }
-
-  return especialidad
-    .replaceAll('_', ' ')
-    .toLowerCase()
-    .replace(/\b\w/g, (letra) =>
-      letra.toUpperCase(),
-    );
-}
-
-function formatearEstado(estado) {
-  const estados = {
-    PENDIENTE: 'Pendiente',
-    CONFIRMADO: 'Confirmado',
-    ATENDIDO: 'Atendido',
-    CANCELADO: 'Cancelado',
-    AUSENTE: 'Ausente',
-  };
-
-  return estados[estado] ?? estado;
 }
