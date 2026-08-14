@@ -2,6 +2,8 @@ import VistaPacientes from '../views/VistaPacientes';
 import VistaMedicos from '../views/VistaMedicos';
 import VistaHistoriaClinica from '../views/VistaHistoriaClinica';
 import VistaTurnos from '../views/VistaTurnos';
+import VistaDetalleMedico from '../views/VistaDetalleMedico';
+import VistaCrearTurno from '../views/VistaCrearTurno';
 
 export default function RenderizadorVista({
   vista,
@@ -22,6 +24,16 @@ export default function RenderizadorVista({
   onVolverAPacientes,
 
   onMostrarHistoriaClinica,
+  legajoMedicoSeleccionado,
+  onMostrarDetalleMedico,
+  onVolverAMedicos,
+
+
+
+  onMostrarCrearTurno,
+  onVolverATurnos,
+  onTurnoCreado,
+
 }) {
   if (vista === 'pacientes') {
     return (
@@ -40,6 +52,8 @@ export default function RenderizadorVista({
         onVerHistoria={
           onMostrarHistoriaClinica
         }
+
+
       />
     );
   }
@@ -58,6 +72,7 @@ export default function RenderizadorVista({
           onCancelarFormularioMedico
         }
         onMedicoCreado={onMedicoCreado}
+        onVerMedico={onMostrarDetalleMedico}
       />
     );
   }
@@ -65,7 +80,17 @@ export default function RenderizadorVista({
   if (vista === 'turnos') {
     return (
       <VistaTurnos
+        onNuevoTurno={onMostrarCrearTurno}
+      />
+    );
+  }
+
+  if (vista === 'crearTurno') {
+    return (
+      <VistaCrearTurno
         pacientes={pacientes}
+        onTurnoCreado={onTurnoCreado}
+        onVolver={onVolverATurnos}
       />
     );
   }
@@ -79,6 +104,21 @@ export default function RenderizadorVista({
       />
     );
   }
+
+
+  if (vista === 'detalleMedico') {
+      return (
+        <VistaDetalleMedico
+          legajo={
+            legajoMedicoSeleccionado
+          }
+          medicos={medicos}
+          onVolver={
+            onVolverAMedicos
+          }
+        />
+      );
+    }
 
   return null;
 }

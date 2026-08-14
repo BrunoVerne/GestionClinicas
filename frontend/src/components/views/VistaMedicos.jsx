@@ -3,7 +3,6 @@ import { useMemo, useState } from 'react';
 import CartaDeMedico from '../cards/CartaDeMedico';
 import FormularioMedico from '../Docs/forms/FormularioMedico';
 import Buscador from '../panel/Buscador';
-import GrillaHorarioMedico from '../agenda/GrillaHorarioMedico';
 
 export default function VistaMedicos({
   medicos,
@@ -11,13 +10,11 @@ export default function VistaMedicos({
   onMostrarFormularioMedico,
   onCancelarFormularioMedico,
   onMedicoCreado,
+  onVerMedico,
 }) {
   const [busqueda, setBusqueda] = useState('');
 
-  const [
-    legajoHorarioAbierto,
-    setLegajoHorarioAbierto,
-  ] = useState(null);
+ 
 
   const medicosFiltrados = useMemo(() => {
     const termino = busqueda.trim().toLowerCase();
@@ -120,42 +117,20 @@ export default function VistaMedicos({
         </div>
       ) : (
         <div className="row g-4">
-          {medicosFiltrados.map((medico) => {
-            const horarioAbierto =
-              legajoHorarioAbierto === medico.legajo;
-
-            return (
-              <div
-                className={
-                  horarioAbierto
-                    ? 'col-12'
-                    : 'col-12 col-md-6 col-xl-4'
-                }
-                key={medico.legajo}
-              >
-                <CartaDeMedico
-                  medico={medico}
-                  horarioAbierto={horarioAbierto}
-                  onModificarHorario={() =>
-                    setLegajoHorarioAbierto(
-                      horarioAbierto
-                        ? null
-                        : medico.legajo,
-                    )
-                  }
-                />
-
-                {horarioAbierto && (
-                  <div className="mt-3">
-                    <GrillaHorarioMedico
-                      legajoMedico={medico.legajo}
-                    />
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+  {medicosFiltrados.map((medico) => (
+    <div
+      className="col-12 col-md-6 col-xl-4"
+      key={medico.legajo}
+    >
+      <CartaDeMedico
+        medico={medico}
+        onVerMedico={() =>
+          onVerMedico(medico.legajo)
+        }
+      />
+    </div>
+  ))}
+</div>
       )}
     </section>
   );

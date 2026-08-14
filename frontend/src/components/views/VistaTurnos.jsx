@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import FormularioTurno from '../Docs/forms/FormularioTurno';
 
 import {
   cancelarTurno,
@@ -10,11 +9,10 @@ import {
 import '../../styles/views/vistaTurnos.css';
 
 export default function VistaTurnos({
-  pacientes = [],
+  onNuevoTurno,
 }) {
   const [turnos, setTurnos] = useState([]);
-  const [mostrandoFormulario, setMostrandoFormulario] =
-    useState(false);
+ 
 
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
@@ -46,14 +44,7 @@ export default function VistaTurnos({
     }
   }
 
-  function agregarTurno(turnoCreado) {
-    setTurnos((actuales) => [
-      ...actuales,
-      turnoCreado,
-    ]);
-
-    setMostrandoFormulario(false);
-  }
+  
 
   async function manejarCancelarTurno(
     numeroTurno,
@@ -134,18 +125,14 @@ export default function VistaTurnos({
           </p>
         </div>
 
-        {!mostrandoFormulario && (
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() =>
-              setMostrandoFormulario(true)
-            }
-          >
-            <i className="bi bi-calendar-plus me-2" />
-            Nuevo turno
-          </button>
-        )}
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={onNuevoTurno}
+        >
+          <i className="bi bi-calendar-plus me-2" />
+          Nuevo turno
+        </button>
       </header>
 
       {error && (
@@ -157,17 +144,7 @@ export default function VistaTurnos({
         </div>
       )}
 
-      {mostrandoFormulario && (
-        <div className="vista-turnos__formulario">
-          <FormularioTurno
-            pacientes={pacientes}
-            onTurnoCreado={agregarTurno}
-            onCancelar={() =>
-              setMostrandoFormulario(false)
-            }
-          />
-        </div>
-      )}
+      
 
       {turnosOrdenados.length === 0 ? (
         <div className="estado-vacio">

@@ -26,7 +26,7 @@ function formatearFecha(fecha) {
   );
 }
 
-export default function CartaDeMedico({medico,horarioAbierto,onModificarHorario}) {
+export default function CartaDeMedico({medico,onVerMedico}) {
   const especialidades =
     medico.especialidades?.map(
       (relacion) => relacion.especialidad,
@@ -160,24 +160,15 @@ export default function CartaDeMedico({medico,horarioAbierto,onModificarHorario}
         </section>
       </div>
       <footer className="carta-medico__acciones">
-        <button
-          type="button"
-          className="btn btn-outline-primary btn-sm"
-          onClick={onModificarHorario}
-        >
-          <i
-            className={`bi ${
-              horarioAbierto
-                ? 'bi-calendar-x'
-                : 'bi-calendar-week'
-            } me-2`}
-          />
-
-          {horarioAbierto
-            ? 'Cerrar horario'
-            : 'Modificar horario'}
-        </button>
-      </footer>
+  <button
+    type="button"
+    className="btn btn-outline-primary btn-sm"
+    onClick={onVerMedico}
+  >
+    <i className="bi bi-person-lines-fill me-2" />
+    Ver profesional
+  </button>
+</footer>
     </article>
   );
 }

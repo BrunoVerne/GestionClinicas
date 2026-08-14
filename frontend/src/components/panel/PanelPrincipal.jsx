@@ -21,6 +21,11 @@ export default function PanelPrincipal({
   ] = useState(null);
 
   const [
+    legajoMedicoSeleccionado,
+    setLegajoMedicoSeleccionado,
+  ] = useState(null);
+
+  const [
     mostrandoFormularioPaciente,
     setMostrandoFormularioPaciente,
   ] = useState(false);
@@ -40,7 +45,8 @@ export default function PanelPrincipal({
   } = useDatosClinica();
 
   const limpiarSeleccion = () => {
-    setDniSeleccionado(null);
+  setDniSeleccionado(null);
+  setLegajoMedicoSeleccionado(null);
   };
 
   const cerrarFormularios = () => {
@@ -105,6 +111,35 @@ export default function PanelPrincipal({
     setVista('pacientes');
   }
 
+  const mostrarDetalleMedico = (legajo) => {
+    cerrarFormularios();
+    setLegajoMedicoSeleccionado(legajo);
+    setVista('detalleMedico');
+  };
+
+const volverAMedicos = () => {
+    setLegajoMedicoSeleccionado(null);
+    setVista('medicos');
+  };
+
+
+const mostrarCrearTurno = () => {
+  limpiarSeleccion();
+  cerrarFormularios();
+  setVista('crearTurno');
+};
+
+const volverATurnos = () => {
+  setVista('turnos');
+};
+
+const turnoCreado = () => {
+  setVista('turnos');
+};
+
+
+
+
   return (
     <div className="panel-principal">
       <BarraPrincipal
@@ -167,6 +202,33 @@ export default function PanelPrincipal({
           onVolverAPacientes={
             volverAPacientes
           }
+
+          legajoMedicoSeleccionado={
+            legajoMedicoSeleccionado
+          }
+
+          onMostrarDetalleMedico={
+            mostrarDetalleMedico
+          }
+
+          onVolverAMedicos={
+            volverAMedicos
+          }
+
+          onMostrarCrearTurno={
+            mostrarCrearTurno
+          }
+
+          onVolverATurnos={
+            volverATurnos
+          }
+
+          onTurnoCreado={
+            turnoCreado
+          }
+
+          
+
         />
       </ContenidoPanel>
     </div>
