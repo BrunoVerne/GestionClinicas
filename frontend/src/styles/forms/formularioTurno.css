@@ -94,3 +94,135 @@
     width: 100%;
   }
 }
+
+
+.formulario-turno__pacientes-resultados {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.formulario-turno__paciente-resultado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  padding: 12px 14px;
+
+  text-align: left;
+
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.formulario-turno__paciente-resultado:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.formulario-turno__paciente-icono {
+  display: grid;
+  flex: 0 0 38px;
+
+  width: 38px;
+  height: 38px;
+
+  place-items: center;
+
+  color: #475569;
+  background: #f1f5f9;
+
+  border-radius: 9px;
+}
+
+.formulario-turno__paciente-datos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.formulario-turno__paciente-datos strong {
+  color: #1e293b;
+  font-size: 0.9rem;
+}
+
+.formulario-turno__paciente-datos span {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.formulario-turno__paciente-flecha {
+  color: #94a3b8;
+}
+
+.formulario-turno__sin-resultados {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 12px;
+  padding: 12px;
+
+  color: #64748b;
+  font-size: 0.85rem;
+
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.formulario-turno__paciente-seleccionado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 14px 16px;
+
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+}
+
+.formulario-turno__paciente-seleccionado-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.formulario-turno__paciente-seleccionado-info > div:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario-turno__paciente-seleccionado-etiqueta {
+  margin-bottom: 2px;
+
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.formulario-turno__paciente-seleccionado-info strong {
+  color: #166534;
+}
+
+.formulario-turno__paciente-seleccionado-info span:last-child {
+  color: #64748b;
+  font-size: 0.82rem;
+}
+
+.formulario-turno__paciente-icono--seleccionado {
+  color: #15803d;
+  background: #dcfce7;
+}

@@ -1,0 +1,124 @@
+.item-tratamiento {
+  margin-bottom: 1rem;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #e4e9ef;
+  border-left: 4px solid;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(30, 52, 75, 0.07);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.item-tratamiento:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(30, 52, 75, 0.11);
+}
+
+.item-tratamiento-activo {
+  border-left-color: #198754;
+}
+
+.item-tratamiento-finalizado {
+  border-left-color: #94a3b8;
+}
+
+.item-tratamiento-encabezado {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.2rem 1.25rem;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.item-tratamiento-titulo {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.item-tratamiento-titulo i {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: #198754;
+  font-size: 1.15rem;
+}
+
+.item-tratamiento-titulo h3 {
+  margin: 0;
+  color: #253347;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.item-tratamiento-estado {
+  flex-shrink: 0;
+  padding: 0.35rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.estado-activo {
+  color: #157347;
+  background-color: #e7f6ed;
+}
+
+.estado-finalizado {
+  color: #64748b;
+  background-color: #eef1f4;
+}
+
+.item-tratamiento-informacion {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+}
+
+.item-tratamiento-dato {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.item-tratamiento-dato i {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  place-items: center;
+  color: #198754;
+  background-color: #e9f7ef;
+  border-radius: 50%;
+}
+
+.item-tratamiento-dato div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.item-tratamiento-dato span {
+  color: #8791a0;
+  font-size: 0.72rem;
+}
+
+.item-tratamiento-dato strong {
+  color: #354154;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+@media (max-width: 650px) {
+  .item-tratamiento-encabezado {
+    flex-direction: column;
+  }
+
+  .item-tratamiento-informacion {
+    grid-template-columns: 1fr;
+  }
+}

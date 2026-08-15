@@ -1,16 +1,12 @@
 import { useMemo, useState } from 'react';
 
 import CartaDeMedico from '../cards/CartaDeMedico';
-import FormularioMedico from '../Docs/forms/FormularioMedico';
 import Buscador from '../panel/Buscador';
 
 export default function VistaMedicos({
   medicos,
-  mostrandoFormularioMedico,
-  onMostrarFormularioMedico,
-  onCancelarFormularioMedico,
-  onMedicoCreado,
-  onVerMedico,
+  onNuevoMedico,
+  onVerMedico
 }) {
   const [busqueda, setBusqueda] = useState('');
 
@@ -49,39 +45,29 @@ export default function VistaMedicos({
   return (
     <section>
       <header className="encabezado-vista">
+
+
         <div>
           <span className="etiqueta-vista">
-            Profesionales
+            Médicos
           </span>
 
-          <h1>Médicos del sistema</h1>
+          <h1>Médicos registrados</h1>
 
-          <p>
-            Consultá los profesionales registrados y sus
-            respectivas especialidades.
-          </p>
+          
         </div>
 
-        {!mostrandoFormularioMedico && (
-          <button
+        <button
             type="button"
             className="btn btn-success"
-            onClick={onMostrarFormularioMedico}
+            onClick={onNuevoMedico}
           >
             <i className="bi bi-person-plus me-2" />
             Nuevo médico
-          </button>
-        )}
+        </button>
       </header>
 
-      {mostrandoFormularioMedico && (
-        <div className="mb-4">
-          <FormularioMedico
-            onMedicoCreado={onMedicoCreado}
-            onCancelar={onCancelarFormularioMedico}
-          />
-        </div>
-      )}
+      
 
       {medicos.length > 0 && (
         <div className="mb-4">
@@ -117,20 +103,20 @@ export default function VistaMedicos({
         </div>
       ) : (
         <div className="row g-4">
-  {medicosFiltrados.map((medico) => (
-    <div
-      className="col-12 col-md-6 col-xl-4"
-      key={medico.legajo}
-    >
-      <CartaDeMedico
-        medico={medico}
-        onVerMedico={() =>
-          onVerMedico(medico.legajo)
-        }
-      />
-    </div>
-  ))}
-</div>
+          {medicosFiltrados.map((medico) => (
+            <div
+              className="col-12 col-md-6 col-xl-4"
+              key={medico.legajo}
+            >
+              <CartaDeMedico
+                medico={medico}
+                onVerMedico={() =>
+                  onVerMedico(medico.legajo)
+                }
+              />
+            </div>
+          ))}
+        </div>
       )}
     </section>
   );

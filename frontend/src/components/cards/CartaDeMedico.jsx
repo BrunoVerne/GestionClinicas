@@ -160,15 +160,15 @@ export default function CartaDeMedico({medico,onVerMedico}) {
         </section>
       </div>
       <footer className="carta-medico__acciones">
-  <button
-    type="button"
-    className="btn btn-outline-primary btn-sm"
-    onClick={onVerMedico}
-  >
-    <i className="bi bi-person-lines-fill me-2" />
-    Ver profesional
-  </button>
-</footer>
+        <button
+          type="button"
+          className="btn btn-outline-primary btn-sm"
+          onClick={onVerMedico}
+        >
+          <i className="bi bi-person-lines-fill me-2" />
+          Ver profesional
+        </button>
+      </footer>
     </article>
   );
 }

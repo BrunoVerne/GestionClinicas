@@ -25,16 +25,6 @@ export default function PanelPrincipal({
     setLegajoMedicoSeleccionado,
   ] = useState(null);
 
-  const [
-    mostrandoFormularioPaciente,
-    setMostrandoFormularioPaciente,
-  ] = useState(false);
-
-  const [
-    mostrandoFormularioMedico,
-    setMostrandoFormularioMedico,
-  ] = useState(false);
-
   const {
     pacientes,
     setPacientes,
@@ -49,31 +39,24 @@ export default function PanelPrincipal({
   setLegajoMedicoSeleccionado(null);
   };
 
-  const cerrarFormularios = () => {
-    setMostrandoFormularioPaciente(false);
-    setMostrandoFormularioMedico(false);
-  };
+  
 
   const mostrarPacientes = () => {
     limpiarSeleccion();
-    cerrarFormularios();
     setVista('pacientes');
   };
 
   const mostrarMedicos = () => {
     limpiarSeleccion();
-    cerrarFormularios();
     setVista('medicos');
   };
 
   const mostrarTurnos = () => {
     limpiarSeleccion();
-    cerrarFormularios();
     setVista('turnos');
   };
 
   const mostrarHistoriaClinica = (dni) => {
-    cerrarFormularios();
     setDniSeleccionado(dni);
     setVista('historia');
   };
@@ -94,7 +77,7 @@ export default function PanelPrincipal({
         ),
     );
 
-    setMostrandoFormularioPaciente(false);
+    setVista('pacientes');
   };
 
   function agregarMedico(medicoCreado) {
@@ -103,7 +86,7 @@ export default function PanelPrincipal({
       medicoCreado,
     ]);
 
-    setMostrandoFormularioMedico(false);
+    setVista('medicos');
   }
 
   function volverAPacientes() {
@@ -112,7 +95,6 @@ export default function PanelPrincipal({
   }
 
   const mostrarDetalleMedico = (legajo) => {
-    cerrarFormularios();
     setLegajoMedicoSeleccionado(legajo);
     setVista('detalleMedico');
   };
@@ -125,8 +107,19 @@ const volverAMedicos = () => {
 
 const mostrarCrearTurno = () => {
   limpiarSeleccion();
-  cerrarFormularios();
   setVista('crearTurno');
+};
+
+
+
+const mostrarCrearPaciente = () => {
+  limpiarSeleccion();
+  setVista('crearPaciente');
+};
+
+const mostrarCrearMedico = () => {
+  limpiarSeleccion();
+  setVista('crearMedico');
 };
 
 const volverATurnos = () => {
@@ -163,36 +156,24 @@ const turnoCreado = () => {
             dniSeleccionado
           }
 
-          mostrandoFormularioPaciente={
-            mostrandoFormularioPaciente
-          }
-          onMostrarFormularioPaciente={() =>
-            setMostrandoFormularioPaciente(
-              true,
-            )
-          }
-          onCancelarFormularioPaciente={() =>
-            setMostrandoFormularioPaciente(
-              false,
-            )
-          }
+          
+
           onPacienteCreado={
             agregarPaciente
           }
 
-          mostrandoFormularioMedico={
-            mostrandoFormularioMedico
+          
+          
+          
+
+          onMostrarCrearPaciente={
+            mostrarCrearPaciente
           }
-          onMostrarFormularioMedico={() =>
-            setMostrandoFormularioMedico(
-              true,
-            )
+
+          onMostrarCrearMedico={
+            mostrarCrearMedico
           }
-          onCancelarFormularioMedico={() =>
-            setMostrandoFormularioMedico(
-              false,
-            )
-          }
+
           onMedicoCreado={agregarMedico}
 
           onMostrarHistoriaClinica={

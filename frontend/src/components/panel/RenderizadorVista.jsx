@@ -4,6 +4,8 @@ import VistaHistoriaClinica from '../views/VistaHistoriaClinica';
 import VistaTurnos from '../views/VistaTurnos';
 import VistaDetalleMedico from '../views/VistaDetalleMedico';
 import VistaCrearTurno from '../views/VistaCrearTurno';
+import VistaCrearPaciente from '../views/VistaCrearPaciente';
+import VistaCrearMedico from '../views/VistaCrearMedico';
 
 export default function RenderizadorVista({
   vista,
@@ -11,14 +13,7 @@ export default function RenderizadorVista({
   medicos,
   dniSeleccionado,
 
-  mostrandoFormularioPaciente,
-  onMostrarFormularioPaciente,
-  onCancelarFormularioPaciente,
   onPacienteCreado,
-
-  mostrandoFormularioMedico,
-  onMostrarFormularioMedico,
-  onCancelarFormularioMedico,
   onMedicoCreado,
 
   onVolverAPacientes,
@@ -28,51 +23,63 @@ export default function RenderizadorVista({
   onMostrarDetalleMedico,
   onVolverAMedicos,
 
-
-
   onMostrarCrearTurno,
   onVolverATurnos,
   onTurnoCreado,
 
+  onMostrarCrearPaciente,
+  onMostrarCrearMedico,
 }) {
-  if (vista === 'pacientes') {
-    return (
-      <VistaPacientes
-        pacientes={pacientes}
-        mostrandoFormularioPaciente={
-          mostrandoFormularioPaciente
-        }
-        onMostrarFormularioPaciente={
-          onMostrarFormularioPaciente
-        }
-        onCancelarFormularioPaciente={
-          onCancelarFormularioPaciente
-        }
-        onPacienteCreado={onPacienteCreado}
-        onVerHistoria={
-          onMostrarHistoriaClinica
-        }
+      if (vista === 'pacientes') {
+        return (
+          <VistaPacientes
+            pacientes={pacientes}
+            onNuevoPaciente={
+              onMostrarCrearPaciente
+            }
+            onVerHistoria={
+              onMostrarHistoriaClinica
+            }
+          />
+        );
+      }
 
-
-      />
-    );
-  }
+    if (vista === 'crearPaciente') {
+      return (
+        <VistaCrearPaciente
+          onPacienteCreado={
+            onPacienteCreado
+          }
+          onVolver={
+            onVolverAPacientes
+          }
+        />
+      );
+    }
 
   if (vista === 'medicos') {
     return (
       <VistaMedicos
         medicos={medicos}
-        mostrandoFormularioMedico={
-          mostrandoFormularioMedico
+        onNuevoMedico={
+          onMostrarCrearMedico
         }
-        onMostrarFormularioMedico={
-          onMostrarFormularioMedico
+        onVerMedico={
+          onMostrarDetalleMedico
         }
-        onCancelarFormularioMedico={
-          onCancelarFormularioMedico
+      />
+    );
+  }
+
+  if (vista === 'crearMedico') {
+    return (
+      <VistaCrearMedico
+        onMedicoCreado={
+          onMedicoCreado
         }
-        onMedicoCreado={onMedicoCreado}
-        onVerMedico={onMostrarDetalleMedico}
+        onVolver={
+          onVolverAMedicos
+        }
       />
     );
   }

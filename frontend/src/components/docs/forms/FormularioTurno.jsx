@@ -1,4 +1,10 @@
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import Buscador from '../../panel/Buscador';
 
 import {
   crearTurno,
@@ -29,6 +35,9 @@ export default function FormularioTurno({
   const [formulario, setFormulario] =
     useState(FORMULARIO_INICIAL);
 
+  const [busquedaPaciente, setBusquedaPaciente] =
+    useState('');
+
   const [especialidades, setEspecialidades] =
     useState([]);
 
@@ -37,8 +46,10 @@ export default function FormularioTurno({
     setMedicosDisponibles,
   ] = useState([]);
 
-  const [cargandoCatalogos, setCargandoCatalogos] =
-    useState(true);
+  const [
+    cargandoCatalogos,
+    setCargandoCatalogos,
+  ] = useState(true);
 
   const [
     buscandoDisponibilidad,
@@ -49,7 +60,8 @@ export default function FormularioTurno({
     useState(false);
 
   const [error, setError] = useState('');
-  const [errores, setErrores] = useState({});
+  const [errores, setErrores] =
+    useState({});
 
   useEffect(() => {
     cargarEspecialidades();
@@ -78,6 +90,80 @@ export default function FormularioTurno({
     }
   }
 
+  const pacienteSeleccionado =
+    useMemo(() => {
+      if (!formulario.dniPaciente) {
+        return null;
+      }
+
+      return (
+        pacientes.find(
+          (paciente) =>
+            String(paciente.dni) ===
+            String(formulario.dniPaciente),
+        ) ?? null
+      );
+    }, [
+      pacientes,
+      formulario.dniPaciente,
+    ]);
+
+  const pacientesFiltrados =
+    useMemo(() => {
+      const termino =
+        busquedaPaciente
+          .trim()
+          .toLowerCase();
+
+      if (!termino) {
+        return [];
+      }
+
+      return pacientes
+        .filter((paciente) => {
+          const nombre =
+            paciente.nombre
+              ?.toLowerCase() ?? '';
+
+          const dni = String(
+            paciente.dni ?? '',
+          );
+
+          return (
+            nombre.includes(termino) ||
+            dni.includes(termino)
+          );
+        })
+        .slice(0, 8);
+    }, [pacientes, busquedaPaciente]);
+
+  function seleccionarPaciente(
+    paciente,
+  ) {
+    setFormulario((actual) => ({
+      ...actual,
+      dniPaciente: String(
+        paciente.dni,
+      ),
+    }));
+
+    setBusquedaPaciente('');
+
+    setErrores((actual) => ({
+      ...actual,
+      dniPaciente: undefined,
+    }));
+  }
+
+  function cambiarPaciente() {
+    setFormulario((actual) => ({
+      ...actual,
+      dniPaciente: '',
+    }));
+
+    setBusquedaPaciente('');
+  }
+
   function manejarCambio(evento) {
     const {
       name,
@@ -94,11 +180,6 @@ export default function FormularioTurno({
       [name]: undefined,
     }));
 
-    /*
-     * Si cambia alguno de los datos que
-     * determinan disponibilidad, descartamos
-     * el médico previamente seleccionado.
-     */
     if (
       [
         'especialidad',
@@ -152,15 +233,21 @@ export default function FormularioTurno({
       }
     }
 
-    setErrores(nuevosErrores);
+    setErrores((actuales) => ({
+      ...actuales,
+      ...nuevosErrores,
+    }));
 
     return (
-      Object.keys(nuevosErrores).length === 0
+      Object.keys(nuevosErrores)
+        .length === 0
     );
   }
 
   async function buscarDisponibilidad() {
-    if (!validarBusquedaDisponibilidad()) {
+    if (
+      !validarBusquedaDisponibilidad()
+    ) {
       return;
     }
 
@@ -236,7 +323,9 @@ export default function FormularioTurno({
       formulario.fechaInicio &&
       formulario.fechaFin &&
       new Date(formulario.fechaFin) <=
-        new Date(formulario.fechaInicio)
+        new Date(
+          formulario.fechaInicio,
+        )
     ) {
       nuevosErrores.fechaFin =
         'La fecha de fin debe ser posterior al inicio';
@@ -245,11 +334,14 @@ export default function FormularioTurno({
     setErrores(nuevosErrores);
 
     return (
-      Object.keys(nuevosErrores).length === 0
+      Object.keys(nuevosErrores)
+        .length === 0
     );
   }
 
-  async function manejarSubmit(evento) {
+  async function manejarSubmit(
+    evento,
+  ) {
     evento.preventDefault();
 
     if (!validarFormulario()) {
@@ -281,7 +373,8 @@ export default function FormularioTurno({
         ).toISOString(),
 
         motivo:
-          formulario.motivo.trim() || null,
+          formulario.motivo.trim() ||
+          null,
 
         observaciones:
           formulario.observaciones.trim() ||
@@ -290,7 +383,11 @@ export default function FormularioTurno({
 
       onTurnoCreado?.(turno);
 
-      setFormulario(FORMULARIO_INICIAL);
+      setFormulario(
+        FORMULARIO_INICIAL,
+      );
+
+      setBusquedaPaciente('');
       setMedicosDisponibles([]);
     } catch (error) {
       console.error(
@@ -327,8 +424,8 @@ export default function FormularioTurno({
           </h2>
 
           <p className="formulario-turno__descripcion">
-            Seleccioná el horario y consultá los
-            profesionales disponibles.
+            Seleccioná el paciente, horario y
+            profesional disponible.
           </p>
         </div>
       </header>
@@ -343,7 +440,6 @@ export default function FormularioTurno({
       )}
 
       <div className="formulario-turno__contenido">
-
         {/* PACIENTE */}
 
         <section className="formulario-turno__seccion">
@@ -351,48 +447,124 @@ export default function FormularioTurno({
             Paciente
           </h3>
 
-          <div className="row g-3">
-            <div className="col-12">
-              <label
-                className="form-label"
-                htmlFor="dniPaciente"
-              >
-                Paciente
-              </label>
+          {!pacienteSeleccionado ? (
+            <>
+              <Buscador
+                valor={
+                  busquedaPaciente
+                }
+                onChange={
+                  setBusquedaPaciente
+                }
+                placeholder="Buscar paciente por nombre o DNI"
+                cantidadResultados={
+                  pacientesFiltrados.length
+                }
+              />
 
-              <select
-                id="dniPaciente"
-                name="dniPaciente"
-                value={formulario.dniPaciente}
-                onChange={manejarCambio}
-                className={`form-select ${
-                  errores.dniPaciente
-                    ? 'is-invalid'
-                    : ''
-                }`}
-              >
-                <option value="">
-                  Seleccionar paciente
-                </option>
+              {busquedaPaciente &&
+                pacientesFiltrados.length >
+                  0 && (
+                  <div className="formulario-turno__pacientes-resultados">
+                    {pacientesFiltrados.map(
+                      (paciente) => (
+                        <button
+                          key={
+                            paciente.dni
+                          }
+                          type="button"
+                          className="formulario-turno__paciente-resultado"
+                          onClick={() =>
+                            seleccionarPaciente(
+                              paciente,
+                            )
+                          }
+                        >
+                          <div className="formulario-turno__paciente-icono">
+                            <i className="bi bi-person" />
+                          </div>
 
-                {pacientes.map((paciente) => (
-                  <option
-                    key={paciente.dni}
-                    value={paciente.dni}
-                  >
-                    {paciente.nombre} — DNI{' '}
-                    {paciente.dni}
-                  </option>
-                ))}
-              </select>
+                          <div className="formulario-turno__paciente-datos">
+                            <strong>
+                              {
+                                paciente.nombre
+                              }
+                            </strong>
+
+                            <span>
+                              DNI{' '}
+                              {
+                                paciente.dni
+                              }
+                            </span>
+                          </div>
+
+                          <i className="bi bi-chevron-right formulario-turno__paciente-flecha" />
+                        </button>
+                      ),
+                    )}
+                  </div>
+                )}
+
+              {busquedaPaciente &&
+                pacientesFiltrados.length ===
+                  0 && (
+                  <div className="formulario-turno__sin-resultados">
+                    <i className="bi bi-search" />
+
+                    <span>
+                      No se encontraron
+                      pacientes.
+                    </span>
+                  </div>
+                )}
 
               {errores.dniPaciente && (
-                <div className="invalid-feedback">
-                  {errores.dniPaciente}
+                <div className="text-danger small mt-2">
+                  {
+                    errores.dniPaciente
+                  }
                 </div>
               )}
+            </>
+          ) : (
+            <div className="formulario-turno__paciente-seleccionado">
+              <div className="formulario-turno__paciente-seleccionado-info">
+                <div className="formulario-turno__paciente-icono formulario-turno__paciente-icono--seleccionado">
+                  <i className="bi bi-person-check" />
+                </div>
+
+                <div>
+                  <span className="formulario-turno__paciente-seleccionado-etiqueta">
+                    Paciente seleccionado
+                  </span>
+
+                  <strong>
+                    {
+                      pacienteSeleccionado.nombre
+                    }
+                  </strong>
+
+                  <span>
+                    DNI{' '}
+                    {
+                      pacienteSeleccionado.dni
+                    }
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm"
+                onClick={
+                  cambiarPaciente
+                }
+              >
+                Cambiar
+              </button>
             </div>
-          </div>
+          )}
         </section>
 
         {/* ESPECIALIDAD Y HORARIO */}
@@ -418,7 +590,9 @@ export default function FormularioTurno({
                   formulario.especialidad
                 }
                 onChange={manejarCambio}
-                disabled={cargandoCatalogos}
+                disabled={
+                  cargandoCatalogos
+                }
                 className={`form-select ${
                   errores.especialidad
                     ? 'is-invalid'
@@ -432,8 +606,12 @@ export default function FormularioTurno({
                 {especialidades.map(
                   (especialidad) => (
                     <option
-                      key={especialidad}
-                      value={especialidad}
+                      key={
+                        especialidad
+                      }
+                      value={
+                        especialidad
+                      }
                     >
                       {especialidad.replaceAll(
                         '_',
@@ -446,7 +624,9 @@ export default function FormularioTurno({
 
               {errores.especialidad && (
                 <div className="invalid-feedback">
-                  {errores.especialidad}
+                  {
+                    errores.especialidad
+                  }
                 </div>
               )}
             </div>
@@ -476,7 +656,9 @@ export default function FormularioTurno({
 
               {errores.fechaInicio && (
                 <div className="invalid-feedback">
-                  {errores.fechaInicio}
+                  {
+                    errores.fechaInicio
+                  }
                 </div>
               )}
             </div>
@@ -493,7 +675,9 @@ export default function FormularioTurno({
                 id="fechaFin"
                 name="fechaFin"
                 type="datetime-local"
-                value={formulario.fechaFin}
+                value={
+                  formulario.fechaFin
+                }
                 onChange={manejarCambio}
                 className={`form-control ${
                   errores.fechaFin
@@ -504,7 +688,9 @@ export default function FormularioTurno({
 
               {errores.fechaFin && (
                 <div className="invalid-feedback">
-                  {errores.fechaFin}
+                  {
+                    errores.fechaFin
+                  }
                 </div>
               )}
             </div>
@@ -513,7 +699,9 @@ export default function FormularioTurno({
               <button
                 type="button"
                 className="btn btn-outline-primary"
-                onClick={buscarDisponibilidad}
+                onClick={
+                  buscarDisponibilidad
+                }
                 disabled={
                   buscandoDisponibilidad
                 }
@@ -581,7 +769,9 @@ export default function FormularioTurno({
                   (medico) => (
                     <option
                       key={medico.legajo}
-                      value={medico.legajo}
+                      value={
+                        medico.legajo
+                      }
                     >
                       {medico.nombre}
                     </option>
@@ -591,7 +781,9 @@ export default function FormularioTurno({
 
               {errores.legajoMedico && (
                 <div className="invalid-feedback">
-                  {errores.legajoMedico}
+                  {
+                    errores.legajoMedico
+                  }
                 </div>
               )}
 
@@ -603,15 +795,16 @@ export default function FormularioTurno({
                   0 && (
                   <div className="formulario-turno__sin-disponibilidad">
                     <i className="bi bi-info-circle" />
-                    No hay médicos disponibles
-                    cargados para este intervalo.
+                    No hay médicos
+                    disponibles cargados
+                    para este intervalo.
                   </div>
                 )}
             </div>
           </div>
         </section>
 
-        {/* INFORMACIÓN DEL TURNO */}
+        {/* INFORMACIÓN */}
 
         <section className="formulario-turno__seccion">
           <h3 className="formulario-turno__seccion-titulo">
@@ -631,7 +824,9 @@ export default function FormularioTurno({
                 id="motivo"
                 name="motivo"
                 type="text"
-                value={formulario.motivo}
+                value={
+                  formulario.motivo
+                }
                 onChange={manejarCambio}
                 className="form-control"
                 placeholder="Ej. Control general"

@@ -1,8 +1,7 @@
-import FormularioTurno from '../docs/forms/FormularioTurno';
+import FormularioPaciente from '../docs/forms/FormularioPaciente';
 
-export default function VistaCrearTurno({
-  pacientes,
-  onTurnoCreado,
+export default function VistaCrearPaciente({
+  onPacienteCreado,
   onVolver,
 }) {
   return (
@@ -13,12 +12,11 @@ export default function VistaCrearTurno({
         onClick={onVolver}
       >
         <i className="bi bi-arrow-left me-2" />
-        Volver a turnos
+        Volver a pacientes
       </button>
 
-      <FormularioTurno
-        pacientes={pacientes}
-        onTurnoCreado={onTurnoCreado}
+      <FormularioPaciente
+        onPacienteCreado={onPacienteCreado}
         onCancelar={onVolver}
       />
     </section>
